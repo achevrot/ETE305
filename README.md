@@ -3,16 +3,16 @@
 ## Devoirs pour vendredi 3 février
 
 - Notations : on travaille sur les vols. 
-    - $s_i$ : Statut du vol, booléen, `True`: vol maintenu, ̀`False` : vol supprimé
-    - $CO2_i$ : émissions CO_2 du vol
+    - $s_i$ : Statut du vol, booléen, `True`: vol maintenu, `False` : vol supprimé
+    - $CO2_i$ : émissions CO2 du vol
     - $p_i$ : nombre de passagers dans le vol
-    - $place_train$ : nombre de places libres dans les trains.
+    - place_train : nombre de places libres dans les trains.
 - Variables de décision : vol supprimé ou non
     - Booléen $s_i$
 - Contraintes :
-    - $\sum_i p_i \cdot(1-s_i) < place_train$
+    - $\sum_i p_i \cdot(1-s_i) < $ place_train
 - Critères : min $\sum_i CO2_i \cdot (1-s_i)$
-    - Hypothèse : dans un premier temps, on néglige les émissions de CO_2 des trains, mais il faudra en tenir compte.
+    - Hypothèse : dans un premier temps, on néglige les émissions de CO2 des trains, mais il faudra en tenir compte.
 
 ## Tuto Github
 
