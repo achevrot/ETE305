@@ -1,5 +1,17 @@
 # ETE305
 
+## Devoirs pour vendredi 3 février
+
+- Algo utilisé : Paired comparison method for Multicrietria Decision Making (MCDM) with discrete alternatives.
+- Variables de décision : poids associé à chaque critère
+- Contraintes :
+    - Somme CO2 optimisé < Somme CO2 tendanciel
+    - Nbre de passagers dont le vol est supprimé et qui doivent utilier le train < Nombre de places vides dans le train avant optimisation
+- Critères : 
+    - CO2 émis
+    - Nombre de passagers
+    - Distance 
+
 ## Tuto Github
 
 1. Ouvrir votre éditeur de code (VS Code, PyCharm, ...)
