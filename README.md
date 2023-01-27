@@ -2,15 +2,17 @@
 
 ## Devoirs pour vendredi 3 février
 
-- Algo utilisé : Paired comparison method for Multicrietria Decision Making (MCDM) with discrete alternatives.
-- Variables de décision : poids associé à chaque critère
+- Notations : on travaille sur les vols. 
+    - $s_i$ : Statut du vol, booléen, `True`: vol maintenu, ̀`False` : vol supprimé
+    - $CO2_i$ : émissions CO_2 du vol
+    - $p_i$ : nombre de passagers dans le vol
+    - $place_train$ : nombre de places libres dans les trains.
+- Variables de décision : vol supprimé ou non
+    - Booléen $s_i$
 - Contraintes :
-    - Somme CO2 optimisé < Somme CO2 tendanciel
-    - Nbre de passagers dont le vol est supprimé et qui doivent utilier le train < Nombre de places vides dans le train avant optimisation
-- Critères : 
-    - CO2 émis
-    - Nombre de passagers
-    - Distance 
+    - $\sum_i p_i \cdot(1-s_i) < place_train$
+- Critères : min $\sum_i CO2_i \cdot (1-s_i)$
+    - Hypothèse : dans un premier temps, on néglige les émissions de CO_2 des trains, mais il faudra en tenir compte.
 
 ## Tuto Github
 
