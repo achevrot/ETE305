@@ -17,5 +17,7 @@
 Si vous voulez partir de zéro sur un nouveau fichier, il faut d'abord créer le fichier localement sur votre PC dans le fichier ETE305. Ensuite : 
 
 `git add [nom_fichier]` À faire pour dire quels fichiers modifiés/ajoutés doivent être pris en compte un nouveau fichier sur le github.
+
 `git commit -m "message expliquant la modification"` Permet d'annoncer la modification.
+
 `git push` Permet d'envoyer ses modifications à tout le monde.
