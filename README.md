@@ -11,7 +11,7 @@
     - Booléen $s_i$
 - Contraintes :
     - $\sum_i p_i \cdot(1-s_i) <$ place_train
-- Critères : min $\sum_i CO2_i \cdot (1-s_i)$
+- Critères : min $\sum_i CO2_i \cdot s_i$
     - Hypothèse : dans un premier temps, on néglige les émissions de CO2 des trains, mais il faudra en tenir compte.
 
 ## Tuto Github
