@@ -28,7 +28,7 @@
     - On ne peut pas détruire des avions : $ N_j >= N0_j $
     - Plusieurs avions n'effectuent pas le même trajet : $ \sum_j s_{i,j} <= 1 $
    
-- Critères : min $\sum_i \sum_j CO2_i \cdot s_i   + \sum_j B_j \cdot ICO2_j $
+- Critères : min $\sum_{i,j} CO2_{i,j} \cdot s_{i,j}   + \sum_j B_j \cdot ICO2_j $
     - Hypothèse : dans un premier temps, on néglige les émissions de CO2 des trains, mais il faudra en tenir compte.
 
 ## Tuto Github
