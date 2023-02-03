@@ -32,6 +32,10 @@ Si vous voulez partir de zéro sur un nouveau fichier, il faut d'abord créer le
 
 `git add [nom_fichier]` À faire pour dire quels fichiers modifiés/ajoutés doivent être pris en compte un nouveau fichier sur le github.
 
+`git commit -m "message expliquant la modification"` Permet d'annoncer la modification.
+
+`git push` Permet d'envoyer ses modifications à tout le monde.
+
 
 ### Sources :
 
@@ -39,7 +43,3 @@ Selon l'ADEME, la construction d'un avion à un coût carbone de 40 kgCO2/kg d'a
 https://bilans-ges.ademe.fr/documentation/UPLOAD_DOC_FR/index.htm?aerien.htm
 D'après le rapport du Shift Project et Aero decarbo, un avion a une durée de vie de 15 à 25 ans. Nous prendrons donc 20 ans.
 Donc, sur une année, le coût carbone de la construction d'un avion est de 2kg de CO2 par kg d'avion.
-
-`git commit -m "message expliquant la modification"` Permet d'annoncer la modification.
-
-`git push` Permet d'envoyer ses modifications à tout le monde.
