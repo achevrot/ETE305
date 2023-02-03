@@ -16,7 +16,7 @@
     - $ICO2_j$ : Impact carbone de la construction de l'avion de type j.
 
 - Variables de décision :
-    - Booléen $s_i_j$
+    - Booléen $s_{i,j}$
     - Variable entière : $p_i$ : Nombre de passagers présents en avion dans le vol i.
     - Variable entière : $N_j$ : Nombre d'avions de type j conservés.
 
