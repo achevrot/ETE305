@@ -3,8 +3,8 @@
 ## Devoirs pour vendredi 3 février
 
 - Notations : on travaille sur les vols. 
-    - $s_i_j$ : On utilise l'avion de type j pour effectuer le vol i
-    - $CO2_i_j$ : émissions CO2 du vol i, effectué avec l'avion j
+    - $s_{i,j}$ : On utilise l'avion de type j pour effectuer le vol i
+    - $CO2_{i,j}$ : émissions CO2 du vol i, effectué avec l'avion j
     - $p_i$ : nombre de passagers dans le vol i
     - $p0_i$ : Nombre de passagers initiaux dans le vol j.
     - place_train : nombre de places libres dans les trains.
@@ -23,7 +23,7 @@
 
 - Contraintes :
     - Limite sur le nombre d'avions d'un certain type :
-    - $\sum_i s_i_j <$ N_j
+    - $\sum_i s_{i,j} <$ N_j
     - $\sum_i p_i \cdot(1-s_i) <$ place_train
     - 
 - Critères : min $\sum_i CO2_i \cdot s_i$
