@@ -3,12 +3,23 @@
 ## Devoirs pour vendredi 3 février
 
 - Notations : on travaille sur les vols. 
-    - $s_i$ : Statut du vol, booléen, `True`: vol maintenu, `False` : vol supprimé
-    - $CO2_i$ : émissions CO2 du vol
-    - $p_i$ : nombre de passagers dans le vol
+    - $s_i_j$ : On utilise l'avion de type j pour effectuer le vol i
+    - $CO2_i_j$ : émissions CO2 du vol i, effectué avec l'avion j
+    - $p_i$ : nombre de passagers dans le vol i
+    - $p0_i$ : Nombre de passagers initiaux dans le vol j.
     - place_train : nombre de places libres dans les trains.
-- Variables de décision : vol supprimé ou non
-    - Booléen $s_i$
+    - $N_j$ : Nombre d'avions de type j disponibles.
+    - $N0_j$ : Nombre d'avions de type j initialement disponibles.
+    - $C_j$ : Capacité en passagers de l'avion de type j.
+    - $B_j$ : Nombre d'avions de type j à construire.
+    - $ICO2_j$ : Impact carbone de la construction de l'avion de type j.
+
+- Variables de décision :
+    - Booléen $s_i_j$
+    - Variable entière : $p_i$ : Nombre de passagers présents en avion dans le vol i.
+    - Variable entière : $N_j$ : Nombre d'avions de type j conservés.
+
+
 - Contraintes :
     - $\sum_i p_i \cdot(1-s_i) <$ place_train
 - Critères : min $\sum_i CO2_i \cdot s_i$
