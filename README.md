@@ -16,8 +16,8 @@
 
 - Variables de décision :
     - Booléen $s_{i,j}$
-    - Variable entière : $p_i$ : Nombre de passagers présents en avion dans le vol i.
-    - Variable entière : $N_j$ : Nombre d'avions de type j conservés.
+    - Variable entière : $p_i$
+    - Variable entière : $N_j$
 
 
 - Contraintes :
