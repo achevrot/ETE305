@@ -9,6 +9,7 @@
     - $p0_i$ : Nombre de passagers initiaux dans le vol j.
     - place_train : nombre de places libres dans les trains.
     - $N_j$ : Nombre d'avions de type j disponibles.
+    - 
     - $N0_j$ : Nombre d'avions de type j initialement disponibles.
     - $C_j$ : Capacité en passagers de l'avion de type j.
     - $B_j$ : Nombre d'avions de type j à construire.
