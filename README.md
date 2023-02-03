@@ -42,6 +42,12 @@
         - 31,4% de taux d'occupation
     - trouver une manière de pondérer les places disponibles selon le trajet (yolo)
 
+Idée du tableau attendu :
+| Ville 1 | Ville 2 | Nombre de places libres par jour | CO2 émis / passager |
+|--------------|-----------|------------|------------|
+| | | | |
+| | | | |
+
 - Ajouter au tableau précédent les émissions de CO2 par passager sur chaque trajet ville1 - ville2 -> Constant
 
 Si possible, ce qui est au-dessus fait max le vendredi 10 février
