@@ -9,7 +9,6 @@
     - $p0_i$ : Nombre de passagers initiaux dans le vol j.
     - place_train : nombre de places libres dans les trains.
     - $N_j$ : Nombre d'avions de type j disponibles.
-    - 
     - $N0_j$ : Nombre d'avions de type j initialement disponibles.
     - $C_j$ : Capacité en passagers de l'avion de type j.
     - $B_j$ : Nombre d'avions de type j à construire.
@@ -22,8 +21,7 @@
 
 
 - Contraintes :
-    - Limite sur le nombre d'avions d'un certain type :
-    - $\sum_i s_{i,j} <$ N_j
+    - Limite sur le nombre d'avions d'un certain type :   $\sum_i s_{i,j} <$ N_j
     - $\sum_i p_i \cdot(1-s_i) <$ place_train
     - 
 - Critères : min $\sum_i CO2_i \cdot s_i$
