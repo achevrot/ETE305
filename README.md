@@ -21,7 +21,7 @@
 
 
 - Contraintes :
-    - Limite sur le nombre d'avions d'un certain type :   $ \forall j \sum_i s_{i,j} \leq N_j$
+    - Limite sur le nombre d'avions d'un certain type :   $\forall j \sum_i s_{i,j} \leq N_j$
     - Limite sur la capacité en passagers de l'avion : $p_i \cdot s_{i,j} \leq C_j$
     - Limite en capacité en passagers de train : $\sum_i (p0_i - p_i) \leq$ place_train
     - Impact carbone de la construction d'un nouvel avion : $N_j - N0_j = B_j$
