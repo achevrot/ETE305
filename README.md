@@ -4,7 +4,7 @@
 
 - Notations : on travaille sur les vols. 
     - $s_{i,j}$ : On utilise l'avion de type j pour effectuer le vol i
-    - $CO2_{i,j}$ : émissions CO2 du vol i, effectué avec l'avion j
+    - $CO2_{i,j}$ : émissions $CO_2$ du vol i, effectué avec l'avion j
     - $p_i$ : nombre de passagers dans le vol i
     - $p0_i$ : Nombre de passagers initiaux dans le vol j.
     - place_train : nombre de places libres dans les trains.
@@ -22,11 +22,11 @@
 
 - Contraintes :
     - Limite sur le nombre d'avions d'un certain type :   $\forall j \sum_i s_{i,j} \leq N_j$
-    - Limite sur la capacité en passagers de l'avion : $p_i \cdot s_{i,j} \leq C_j$
+    - Limite sur la capacité en passagers de l'avion : $\forall i,j p_i \cdot s_{i,j} \leq C_j$
     - Limite en capacité en passagers de train : $\sum_i (p0_i - p_i) \leq$ place_train
-    - Impact carbone de la construction d'un nouvel avion : $N_j - N0_j = B_j$
-    - On ne peut pas détruire des avions : $N_j \geq N0_j$
-    - Plusieurs avions n'effectuent pas le même trajet : $\sum_j s_{i,j} \leq 1$
+    - Impact carbone de la construction d'un nouvel avion : $ \forall j N_j - N0_j = B_j$
+    - On ne peut pas détruire des avions : $\forall j N_j \geq N0_j$
+    - Plusieurs avions n'effectuent pas le même trajet : $\forall i \sum_j s_{i,j} \leq 1$
    
 - Critères : min $\sum_{i,j} CO2_{i,j} \cdot s_{i,j}   + \sum_j B_j \cdot ICO2_j $
     - Hypothèse : dans un premier temps, on néglige les émissions de CO2 des trains, mais il faudra en tenir compte.
