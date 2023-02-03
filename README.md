@@ -23,10 +23,10 @@
 - Contraintes :
     - Limite sur le nombre d'avions d'un certain type :   $\sum_i s_{i,j} < N_j$
     - Limite sur la capacité en passagers de l'avion : $p_i \cdot s_{i,j} < C_j$
-    - Limite en capacité en passagers de train : $\sum_i (p0_i - p_i) < $ place_train
-    - Impact carbone de la construction d'un nouvel avion : $ N_j - N0_j = B_j \cdot(ICO2_j) $
-    - On ne peut pas détruire des avions : $ N_j >= N0_j $
-    - Plusieurs avions n'effectuent pas le même trajet : $ \sum_j s_{i,j} <= 1 $
+    - Limite en capacité en passagers de train : $\sum_i (p0_i - p_i) <$ place_train
+    - Impact carbone de la construction d'un nouvel avion : $N_j - N0_j = B_j \cdot(ICO2_j)$
+    - On ne peut pas détruire des avions : $N_j >= N0_j$
+    - Plusieurs avions n'effectuent pas le même trajet : $\sum_j s_{i,j} <= 1$
    
 - Critères : min $\sum_{i,j} CO2_{i,j} \cdot s_{i,j}   + \sum_j B_j \cdot ICO2_j $
     - Hypothèse : dans un premier temps, on néglige les émissions de CO2 des trains, mais il faudra en tenir compte.
