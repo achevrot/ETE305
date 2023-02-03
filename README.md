@@ -2,17 +2,18 @@
 
 ## Modélisation du problème
 
-- Notations : on travaille sur les vols. 
-    - $s_{i,j}$ : On utilise l'avion de type $j$ pour effectuer le vol $i$, booléen
-    - $CO2_{i,j}$ : émissions $CO_2$ du vol $i$, effectué avec l'avion $j$
-    - $p_i$ : nombre de passagers dans le vol $i$
-    - $p0_i$ : Nombre de passagers initiaux dans le vol $i$.
+- Notations : on travaille sur les vols $i$ et les avions $j$. 
+    - $s_{i,j}$ : On utilise l'avion $j$ pour effectuer le vol $i$, booléen
+    - $CO2_{i,j}$ : émissions $CO_2$ du vol $i$ effectué avec l'avion $j$
+    - ${p_0}_i$ : Nombre de passagers initiaux dans le vol $i$.
     - place_train : nombre de places libres dans les trains.
     - $N_j$ : Nombre d'avions de type $j$ disponibles.
     - $N0_j$ : Nombre d'avions de type $j$ initialement disponibles.
     - $C_j$ : Capacité en passagers de l'avion de type $j$.
     - $B_j = N_j-N0_j$ : Nombre d'avions de type $j$ à construire.
     - $ICO2_j$ : Impact carbone de la construction de l'avion de type $j$.
+    - $p_i$ : nombre de passagers dans le vol $i$
+
 
 - Variables de décision :
     - Booléen $s_{i,j}$
@@ -31,18 +32,21 @@
 
 ## À faire
 
-- Obtenir les données sur les avions : 
-    - Nombre d'avions de chaque type initialement disponibles ($N0_j$)
-    - Capacité des avions ($C_j$)
-    - Impact carbone de construction des avions ($ICO2_j$) -> besoin de la masse d'avion par type
+- Dans `flights_and_emissions.csv` : rajouter une colonne capacité -> Constant
+- Créer un csv (ou autre) qui contient les émissions de fabrication pour chaque type d'avion -> Flo
+- Créer un csv avec les colonnes : ville1, ville2, nombre de places libres pour aller de ville1 à ville 2 par jour -> Flo
+    - Pour ça, besoin de beaucoup d'hypothèses !!! 
+    - ville1 et ville 2 à extraire du tableau `flights_and_emissions.csv`
+    - Les chiffres qu'on a :
+        - 82 000 000 de passagers longue distance par an
+        - 31,4% de taux d'occupation
+    - trouver une manière de pondérer les places disponibles selon le trajet (yolo)
 
-- Obtenir les données sur les trains : 
-    - Dans l'idéal, il nous faudrait le nombre de passagers et le nomber de sièges disponibles entre chaque ville
-    - MAIS on ne trouve pas cette donnée, donc il faudrait réfléchir à comment contourner ce problème et créer des données utilisables
-    - impact carbone des trajets en train
+- Ajouter au tableau précédent les émissions de CO2 par passager sur chaque trajet ville1 - ville2 -> Constant
 
-- Adaptation du modèle : 
-    - adapter la contrainte sur le nombe de passagers, qui est pour l'instant globale, en contrainte locale sur chaque trajet (ville1-ville2).
+Si possible, ce qui est au-dessus fait max le vendredi 10 février
+
+- Implémenter la nouvelle optimisation -> Apolline, le week-end du 11-12 février
 
 ## Tuto Github - en local
 
