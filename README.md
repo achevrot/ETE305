@@ -16,7 +16,7 @@
 
 - Variables de décision :
     - Booléen $s_{i,j}$
-    - Variable entière : $p_i$
+    - Variable entière : $p_i$, bornée entre $0$ et $p0_i$
     - Variable entière : $N_j$
 
 - Contraintes :
@@ -39,6 +39,7 @@
 - Obtenir les données sur les trains : 
     - Dans l'idéal, il nous faudrait le nombre de passagers et le nomber de sièges disponibles entre chaque ville
     - MAIS on ne trouve pas cette donnée, donc il faudrait réfléchir à comment contourner ce problème et créer des données utilisables
+    - impact carbone des trajets en train
 
 - Adaptation du modèle : 
     - adapter la contrainte sur le nombe de passagers, qui est pour l'instant globale, en contrainte locale sur chaque trajet (ville1-ville2).
