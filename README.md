@@ -34,7 +34,7 @@
 - Obtenir les données sur les avions : 
     - Nombre d'avions de chaque type initialement disponibles ($N0_j$)
     - Capacité des avions ($C_j$)
-    - Impact carbone de construction des avions ($ICO2_j$)
+    - Impact carbone de construction des avions ($ICO2_j$) -> besoin de la masse d'avion par type
 
 - Obtenir les données sur les trains : 
     - Dans l'idéal, il nous faudrait le nombre de passagers et le nomber de sièges disponibles entre chaque ville
