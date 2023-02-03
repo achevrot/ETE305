@@ -1,37 +1,50 @@
 # ETE305
 
-## Devoirs pour vendredi 3 février
+## Modélisation du problème
 
 - Notations : on travaille sur les vols. 
-    - $s_{i,j}$ : On utilise l'avion de type j pour effectuer le vol i
-    - $CO2_{i,j}$ : émissions $CO_2$ du vol i, effectué avec l'avion j
-    - $p_i$ : nombre de passagers dans le vol i
-    - $p0_i$ : Nombre de passagers initiaux dans le vol j.
+    - $s_{i,j}$ : On utilise l'avion de type $j$ pour effectuer le vol $i$, booléen
+    - $CO2_{i,j}$ : émissions $CO_2$ du vol $i$, effectué avec l'avion $j$
+    - $p_i$ : nombre de passagers dans le vol $i$
+    - $p0_i$ : Nombre de passagers initiaux dans le vol $i$.
     - place_train : nombre de places libres dans les trains.
-    - $N_j$ : Nombre d'avions de type j disponibles.
-    - $N0_j$ : Nombre d'avions de type j initialement disponibles.
-    - $C_j$ : Capacité en passagers de l'avion de type j.
-    - $B_j$ : Nombre d'avions de type j à construire.
-    - $ICO2_j$ : Impact carbone de la construction de l'avion de type j.
+    - $N_j$ : Nombre d'avions de type $j$ disponibles.
+    - $N0_j$ : Nombre d'avions de type $j$ initialement disponibles.
+    - $C_j$ : Capacité en passagers de l'avion de type $j$.
+    - $B_j = N_j-N0_j$ : Nombre d'avions de type $j$ à construire.
+    - $ICO2_j$ : Impact carbone de la construction de l'avion de type $j$.
 
 - Variables de décision :
     - Booléen $s_{i,j}$
-    - Variable entière : $p_i$
+    - Variable entière : $p_i$, bornée entre $0$ et $p0_i$
     - Variable entière : $N_j$
-
 
 - Contraintes :
     - Limite sur le nombre d'avions d'un certain type :   $\forall j \quad \sum_i s_{i,j} \leq N_j$
     - Limite sur la capacité en passagers de l'avion : $\forall i,j \quad p_i \cdot s_{i,j} \leq C_j$
     - Limite en capacité en passagers de train : $\sum_i (p0_i - p_i) \leq$ place_train
-    - Impact carbone de la construction d'un nouvel avion : $\forall j \quad N_j - N0_j = B_j$
     - On ne peut pas détruire des avions : $\forall j \quad N_j \geq N0_j$
     - Plusieurs avions n'effectuent pas le même trajet : $\forall i \quad \sum_j s_{i,j} \leq 1$
    
 - Critères : min $\sum_{i,j} CO2_{i,j} \cdot s_{i,j}   + \sum_j B_j \cdot ICO2_j $
     - Hypothèse : dans un premier temps, on néglige les émissions de CO2 des trains, mais il faudra en tenir compte.
 
-## Tuto Github
+## À faire
+
+- Obtenir les données sur les avions : 
+    - Nombre d'avions de chaque type initialement disponibles ($N0_j$)
+    - Capacité des avions ($C_j$)
+    - Impact carbone de construction des avions ($ICO2_j$) -> besoin de la masse d'avion par type
+
+- Obtenir les données sur les trains : 
+    - Dans l'idéal, il nous faudrait le nombre de passagers et le nomber de sièges disponibles entre chaque ville
+    - MAIS on ne trouve pas cette donnée, donc il faudrait réfléchir à comment contourner ce problème et créer des données utilisables
+    - impact carbone des trajets en train
+
+- Adaptation du modèle : 
+    - adapter la contrainte sur le nombe de passagers, qui est pour l'instant globale, en contrainte locale sur chaque trajet (ville1-ville2).
+
+## Tuto Github - en local
 
 1. Ouvrir votre éditeur de code (VS Code, PyCharm, ...)
 2. Ouvrir le fichier ETE305 dans cet éditeur
