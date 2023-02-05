@@ -40,6 +40,17 @@ for i in range (0, len(aeroport2)) :
             ville2.append(ville_act)
 
 
+
+
+
+passagers_transportes = 82 000 000
+taux_occupation = 0,314
+places_restantes = passagers_transportes / taux_occupation *(1-taux_occupation)
+nb_vols = len(ville1)
+dispo_par_vol = places_restantes / nb_vols
+
+
+
 csv_columns = ['Ville_1','Ville_2']
 
 liste = [  [csv_columns[0]] + ville1 ,  [csv_columns[1]] + ville2 ]
