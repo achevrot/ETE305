@@ -1,4 +1,5 @@
 import pandas as pd
+import csv
 
 sortie = pd.read_csv('flights_and_emissions.csv', usecols=['AC Type'])
 print(sortie)
@@ -72,4 +73,16 @@ Masse['C310'] = 2000
 Masse['A346'] = 300000
 Masse['CRJX'] = 20000
 
-print('la longueur de la liste Masse est', 'len(Masse)')
+print('la longueur de la liste Masse est', len(Masse))
+
+csv_columns = ['Type d aeronef','Masse']
+liste = [ [csv_columns[0]] + [key for key in Masse.keys()],[csv_columns[1]] + [Masse[key] for key in Masse.keys()]]
+print(liste)
+liste2 = zip(*liste)
+print(liste2)
+
+
+with open('mass.csv', 'w', ) as myfile:
+    wr = csv.writer(myfile, delimiter=',', quoting=csv.QUOTE_NONE)
+    for word in liste2 :
+        wr.writerow(word)
