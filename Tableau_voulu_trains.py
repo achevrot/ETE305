@@ -43,17 +43,19 @@ for i in range (0, len(aeroport2)) :
 
 
 
-passagers_transportes = 82 000 000
-taux_occupation = 0,314
-places_restantes = passagers_transportes / taux_occupation *(1-taux_occupation)
+passagers_transportes = 82000000 / 12
+taux_occupation = 0.314
+places_restantes = passagers_transportes * (1-taux_occupation) / taux_occupation
 nb_vols = len(ville1)
 dispo_par_vol = places_restantes / nb_vols
+nb_places_dispo_liste = [dispo_par_vol]*nb_vols
 
 
 
-csv_columns = ['Ville_1','Ville_2']
 
-liste = [  [csv_columns[0]] + ville1 ,  [csv_columns[1]] + ville2 ]
+csv_columns = ['Ville_1','Ville_2','Places_disponibles_en_train']
+
+liste = [ [csv_columns[0]] + ville1 ,  [csv_columns[1]] + ville2 , [csv_columns[2]] + nb_places_dispo_liste ]
 liste2 = zip(*liste)
 
 with open('tableau_voulu.csv', 'w', ) as myfile:
