@@ -47,7 +47,7 @@ passagers_transportes = 82000000 / 12
 taux_occupation = 0.314
 places_restantes = passagers_transportes * (1-taux_occupation) / taux_occupation
 nb_vols = len(ville1)
-dispo_par_vol = places_restantes / nb_vols
+dispo_par_vol = int(places_restantes / nb_vols)
 nb_places_dispo_liste = [dispo_par_vol]*nb_vols
 
 
