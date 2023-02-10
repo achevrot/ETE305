@@ -32,7 +32,7 @@ Masse['B752'] = 100000
 Masse['E190'] = 40000
 Masse['A319'] = 60000
 Masse['CRJ9'] = 30000
-Masse['A320N'] = 60000
+Masse['A20N'] = 60000 # C'est l'A320N mais son code c'est A20N !
 Masse['A321'] = 60000
 Masse['DH8D'] = 25000
 Masse['CRJ7'] = 25000
@@ -75,7 +75,7 @@ Masse['CRJX'] = 20000
 
 print('la longueur de la liste Masse est', len(Masse))
 
-csv_columns = ['Type d aeronef','Masse']
+csv_columns = ['AC Type','Masse']
 liste = [ [csv_columns[0]] + [key for key in Masse.keys()],[csv_columns[1]] + [Masse[key] for key in Masse.keys()]]
 print(liste)
 liste2 = zip(*liste)
