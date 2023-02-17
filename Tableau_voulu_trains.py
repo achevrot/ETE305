@@ -44,11 +44,25 @@ for i in range (0, len(aeroport2)) :
 
 
 passagers_transportes = 82000000 / 12
-taux_occupation = 0.314
-places_restantes = passagers_transportes * (1-taux_occupation) / taux_occupation
-nb_vols = len(ville1)
-dispo_par_vol = int(places_restantes / nb_vols)
-nb_places_dispo_liste = [dispo_par_vol]*nb_vols
+taux_occupation_initial = 0.314
+taux_occupation_final = 0.80
+places_restantes = passagers_transportes * (taux_occupation_final-taux_occupation_initial) / taux_occupation_initial
+#nb_vols = len(ville1)
+#dispo_par_vol = int(places_restantes / nb_vols)
+#nb_places_dispo_liste = [dispo_par_vol]*nb_vols
+
+part_places_grand_trajet = 0.70
+
+popular_cities = ["Berlin","Bremen","Cologne","Dresden","Frankfurt-am-Main","Hannover","Leipzig","Munich","Nuremberg"]
+liste_villes_1 = pd.read_csv('Tableau_recap_train.csv', usecols=['Ville_1'])
+liste_villes_2 = pd.read_csv('Tableau_recap_train.csv', usecols=['Ville_2'])
+liste_places_train = pd.read_csv('Tableau_recap_train.csv', usecols=['Places_dispo_train'])
+
+somme = 0
+
+for i in range (0,liste_villes_1) : 
+    if (liste_villes_1[i] in popular_cities) :
+        somme+= 1
 
 
 
@@ -62,5 +76,13 @@ with open('tableau_voulu.csv', 'w', ) as myfile:
     wr = csv.writer(myfile, delimiter=',', quoting=csv.QUOTE_NONE)
     for word in liste2 :
         wr.writerow(word)
+
+
+
+
+popular_cities = ["Berlin","Bremen","Cologne","Dresden","Frankfurt-am-Main","Hannover","Leipzig","Munich","Nuremberg"]
+liste_villes = pd.read_csv('Aéroports_villes.csv', usecols=['city'])
+liste_aeroports = pd.read_csv('Aéroports_villes.csv', usecols=['icao'])
+
 
 
