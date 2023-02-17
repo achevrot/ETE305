@@ -47,7 +47,7 @@ CO2_init = flights["Emissions_kgCO2eq"].to_numpy()
 passagers_init = np.ones(n) * 200 # en vrai, à aller chercher selon type d'avion
 
 # nombre de passagers variable
-passagers = np.empty(n, dtype=object)
+passagers = np.empty((n,m), dtype=object)
 
 # Tableau CO2 total - PROVISOIRE, à remplacer pas
 #CO2 = np.load("CO2.npy")
@@ -67,24 +67,25 @@ prob = pulp.LpProblem("Optim", pulp.LpMinimize)
 
 # Variables de décision
 for i in range(n):
-    passagers[i] = pulp.LpVariable('passagers_{}'.format(i), cat=pulp.LpInteger)
     for j in range(m):
         statut_vol[i,j] = pulp.LpVariable('statut_{}'.format(i),cat=pulp.LpBinary)
+        passagers[i,j] = pulp.LpVariable('passagers_{}'.format(i), cat=pulp.LpInteger)
 for j in range(m):
     N_avions[j] = pulp.LpVariable('dispo_{}'.format(j), cat=pulp.LpInteger)
 
 # Contraintes
 for i in range(n):
-    prob += passagers[i] >=0
-    prob += passagers[i] <= passagers_init[i]
-    statut_vol[i].sum() <= 1
-    j = np.where(avions['AC Type'] == flights['AC Type'][i])[0][0]
-    passagers[i] <= avions['Capacite'][j]
-
-prob += (passagers - passagers_init).sum() <= place_train
+    for j in range(m):
+        prob += passagers[i,j] >= 0
+        #prob += np.sum(passagers,axis=1)[i] <= passagers_init[i]
+        prob += passagers[i,j] <= statut_vol[i,j] * avions['Capacite'][j]
+        prob += statut_vol[i].sum() <= 1
+    
+prob += (np.sum(passagers,axis=1) - passagers_init).sum() <= place_train
 
 for j in range(m):
-    N_avions[j] >= avions['N0'][j]
+    prob += N_avions[j] >= avions['N0'][j]
+    prob += np.sum(statut_vol, axis=0)[j] <= N_avions[j]
 
 # Fonction objectif
 prob += pulp.lpSum(np.multiply(CO2, statut_vol))
@@ -97,7 +98,6 @@ print("Variables: ", end=' ')
 for i in range(n):
     print(pulp.value(statut_vol[i]), end=' ')
 print()
-
 
 statut_vol_fin = np.empty(n)
 for i in range(n):
