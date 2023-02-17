@@ -22,14 +22,40 @@ for i in range(len(df_all_flights)):
         distance.append(dgc)
         emissions_train.append(dgc * 0.0445)
 
+# Calcul places disponibles selon trajet populaire ou pas
+
+taux_grands_trajets = 0.7
+taux_remplissage_objectif = 0.8
+
+taux_remplissage_actuel = 0.314
 passagers_transportes = 82000000 / 12
-taux_occupation = 0.314
-places_restantes = passagers_transportes * (1-taux_occupation) / taux_occupation
-nb_lignes = len(couple_v1_v2)
-dispo_par_vol = int(places_restantes / nb_lignes)
-places_dispo_train = [dispo_par_vol]*nb_lignes
+places_restantes = passagers_transportes * (taux_remplissage_objectif / taux_remplissage_actuel - 1)
+
+popular_cities = ["Berlin","Bremen","Cologne","Dresden","Frankfurt-am-Main","Hannover","Leipzig","Munich","Nuremberg",
+                  "Hamburg","Stuttgart","Dusseldorf","Dortmund","Essen"]
+nb_trajet_pop = 0
+for j in range(len(couple_v1_v2)):
+    if (couple_v1_v2[j][0] in popular_cities) and (couple_v1_v2[j][1] in popular_cities):
+        nb_trajet_pop += 1
+
+places_restantes_grands_trajets = places_restantes * taux_grands_trajets
+places_restantes_petits_trajets = places_restantes - places_restantes_grands_trajets
+
+places_restantes_grands_trajets_par_ligne = places_restantes_grands_trajets / nb_trajet_pop
+places_restantes_petits_trajets_par_ligne = places_restantes_petits_trajets / (len(couple_v1_v2) - nb_trajet_pop)
+
+places_dispo_train = []
+
+for j in range(len(couple_v1_v2)):
+    if (couple_v1_v2[j][0] in popular_cities) and (couple_v1_v2[j][1] in popular_cities):
+        places_dispo_train.append(round(places_restantes_grands_trajets_par_ligne/31,0))
+    else:
+        places_dispo_train.append(round(places_restantes_petits_trajets_par_ligne/31,0))
+
+# Création tableau final
 
 df_recap_train = pd.DataFrame()
+
 ville_1 = []
 ville_2 = []
 for k in range(len(couple_v1_v2)):
@@ -37,8 +63,9 @@ for k in range(len(couple_v1_v2)):
     ville_2.append(couple_v1_v2[k][1])
 df_recap_train['Ville_1'] = ville_1
 df_recap_train['Ville_2'] = ville_2
+
 df_recap_train['Distance (km)'] = distance
-df_recap_train['Places_dispo_train'] = places_dispo_train
+df_recap_train['Places dispo par jour'] = places_dispo_train
 df_recap_train['Emissions_CO2 (kg/passager)'] = emissions_train
 
 df_recap_train.to_csv('Tableau_recap_train.csv')
