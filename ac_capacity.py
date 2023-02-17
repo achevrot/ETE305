@@ -65,6 +65,7 @@ new_dict['AC_type'] = list(AC_type)
 new_dict['capacity'] = list(capacity)
 
 df_capacity = pd.DataFrame(data=new_dict)
+df_capacity.to_csv('capacity.csv')
 
 list_capa = []
 for i in range(len(df_flights_emissions.index)):
