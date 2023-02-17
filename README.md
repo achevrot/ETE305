@@ -54,6 +54,12 @@ Si possible, ce qui est au-dessus fait max le vendredi 10 février
 
 - Implémenter la nouvelle optimisation -> Apolline, le week-end du 11-12 février
 
+## Notes
+
+- Faire un titre + abstract en 120 mots : qu'est-ce qu'on a fait, comment on s'y est pris et le résultat. Pour la veille. + lien git
+- Présentation de 15 minutes.
+- Mail : xavier.olive@onera.fr ; antoine.chevrot@onera.fr ; olivier.poitou@onera.fr
+
 ## Tuto Github - en local
 
 1. Ouvrir votre éditeur de code (VS Code, PyCharm, ...)
