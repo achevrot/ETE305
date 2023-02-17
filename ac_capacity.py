@@ -1,4 +1,3 @@
-import numpy as np
 import pandas as pd
 
 df_flights_emissions = pd.read_csv('flights_and_emissions.csv')
@@ -75,4 +74,4 @@ for i in range(len(df_flights_emissions.index)):
 
 df_flights_emissions['capacity'] = list_capa
 
-df_flights_emissions.to_csv('flights_emissions_capacity.csv')
+df_flights_emissions.to_csv('flights_and_emissions.csv')
