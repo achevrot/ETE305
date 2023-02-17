@@ -1,3 +1,6 @@
+import sys
+
+import numpy as np
 import pandas as pd
 import airportsdata
 
@@ -10,10 +13,14 @@ df_airports_ED = df_airports_ED.filter(['icao', 'name', 'city'])
 df_flights_emissions = pd.read_csv('flights_and_emissions.csv')
 list_ADEP = list(df_flights_emissions['ADEP'].values)
 list_ADES = list(df_flights_emissions['ADES'].values)
-list_airports = list(set(list_ADES + list_ADES))
+for j in range(len(list_ADES)):
+    list_ADEP.append(list_ADES[j])
+list_airports = list(set(list_ADEP))
+print(len(list_airports))
+
 
 np_airports = df_airports_ED.to_numpy()
-
+np.set_printoptions(threshold=sys.maxsize)
 np_airports_utiles = []
 for i in range(len(np_airports)):
     if np_airports[i,0] in list_airports:
