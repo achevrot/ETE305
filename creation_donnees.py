@@ -75,8 +75,14 @@ Masse['CRJX'] = 20000
 
 print('la longueur de la liste Masse est', len(Masse))
 
-csv_columns = ['AC Type','Masse']
-liste = [ [csv_columns[0]] + [key for key in Masse.keys()],[csv_columns[1]] + [Masse[key] for key in Masse.keys()]]
+impact_co2_par_kilo_avion = 40
+co2_build = dict()
+for keys in Masse :
+    co2_build[keys] = impact_co2_par_kilo_avion * Masse[keys]
+
+
+csv_columns = ['AC Type','Masse','Impact CO2 construction']
+liste = [ [csv_columns[0]] + [key for key in Masse.keys()],[csv_columns[1]] + [Masse[key] for key in Masse.keys()], [csv_columns[2]] + [co2_build[key] for key in Masse.keys()] ]
 print(liste)
 liste2 = zip(*liste)
 print(liste2)
