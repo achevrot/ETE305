@@ -81,7 +81,7 @@ for keys in Masse :
     co2_build[keys] = impact_co2_par_kilo_avion * Masse[keys]
 
 
-csv_columns = ['AC Type','Masse','Impact CO2 construction']
+csv_columns = ['AC Type','Masse avion (kg)','Impact CO2 construction (kg CO2)']
 liste = [ [csv_columns[0]] + [key for key in Masse.keys()],[csv_columns[1]] + [Masse[key] for key in Masse.keys()], [csv_columns[2]] + [co2_build[key] for key in Masse.keys()] ]
 print(liste)
 liste2 = zip(*liste)
