@@ -1,7 +1,7 @@
 # ETE305
 
 Slides : 
-https://docs.google.com/presentation/d/1xSw2Pv8LIZkcIfeaQxxwF5AFh1vSz4pq_GcVUQUT0hw/edit?usp=sharing
+https://docs.google.com/presentation/d/1PPGJkFX__X4g9yJG4p3WRMIzL1cTqfYSVBUSeDgx-1M/edit?usp=sharing
 
 # Abstract : Impact de la gestion du trafic ferroviaire sur le bilan carbone du trafic aérien en Allemagne
 
