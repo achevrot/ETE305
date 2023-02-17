@@ -3,12 +3,16 @@
 # Abstract : Impact de la gestion du trafic ferroviaire sur le bilan carbone du trafic aérien en Allemagne
 
 Notre étude s’intéresse à la minimisation du bilan carbone de la mobilité collective intérieure à l’Allemagne, et plus particulièrement aux trafics aériens et ferroviaires. Tout en conservant le même nombre de passagers entre la situation initiale et la situation finale (pas de sobriété), nous proposons d’activer 2 leviers :
-    1)	Le report modal de l’avion vers le train
-    2)	Le remplacement d’avions fortement émetteurs de GES vers d’autres moins émetteurs (par exemple des avions plus petits)
+
+1)	Le report modal de l’avion vers le train
+2)	Le remplacement d’avions fortement émetteurs de GES vers d’autres moins émetteurs (par exemple des avions plus petits)
+
 Et ce, sachant qu’il est possible de construire de nouveaux avions, mais au prix d’un certain coût carbone.
 Les décisions prises par notre algorithme dépendent de l’arbitrage fait sur 2 paramètres :
-    1)	Le taux de remplissage maximal des trains   
-    2)	La répartition des places de train entre les axes reliant 2 villes de plus de 500 000 habitants, et ceux qui n’en relie pas.
+
+1)	Le taux de remplissage maximal des trains   
+2)	La répartition des places de train entre les axes reliant 2 villes de plus de 500 000 habitants, et ceux qui n’en relie pas.
+
 Nos principaux résultats ont été les suivants :
 
 
