@@ -1,5 +1,8 @@
 # ETE305
 
+Slides : 
+https://docs.google.com/presentation/d/1xSw2Pv8LIZkcIfeaQxxwF5AFh1vSz4pq_GcVUQUT0hw/edit?usp=sharing
+
 # Abstract : Impact de la gestion du trafic ferroviaire sur le bilan carbone du trafic aérien en Allemagne
 
 Notre étude s’intéresse à la minimisation du bilan carbone de la mobilité collective intérieure à l’Allemagne, et plus particulièrement aux trafics aériens et ferroviaires. Tout en conservant le même nombre de passagers entre la situation initiale et la situation finale (pas de sobriété), nous proposons d’activer 2 leviers :
