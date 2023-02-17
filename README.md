@@ -13,7 +13,7 @@ Les décisions prises par notre algorithme dépendent de l’arbitrage fait sur 
 1)	Le taux de remplissage maximal des trains   
 2)	La répartition des places de train entre les axes reliant 2 villes de plus de 500 000 habitants, et ceux qui n’en relie pas.
 
-Nos principaux résultats ont été les suivants :
+Nos principaux résultats sont les suivants :
 
 
 
