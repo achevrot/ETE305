@@ -18,7 +18,11 @@ Les décisions prises par notre algorithme dépendent de l’arbitrage fait sur 
 
 Nos principaux résultats sont les suivants :
 
+## Notes
 
+- Faire un titre + abstract en 120 mots : qu'est-ce qu'on a fait, comment on s'y est pris et le résultat. Pour la veille. + lien git
+- Présentation de 15 minutes.
+- Mail : xavier.olive@onera.fr ; antoine.chevrot@onera.fr ; olivier.poitou@onera.fr
 
 ## Modélisation du problème
 
