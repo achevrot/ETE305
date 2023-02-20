@@ -18,8 +18,8 @@ for i in range(len(df_all_flights)):
         geo_ville_1 = (df_all_flights['ADEP Latitude'][i], df_all_flights['ADEP Longitude'][i])
         geo_ville_2 = (df_all_flights['ADES Latitude'][i], df_all_flights['ADES Longitude'][i])
         dgc = great_circle(geo_ville_1, geo_ville_2).km
-        distance.append(dgc)
-        emissions_train.append(dgc * 0.0445)
+        distance.append(round(dgc,3)) # Arrondi à 3 chiffres après la virgule
+        emissions_train.append(round(dgc * 0.0445,3)) # Arrondi à 3 chiffres après la virgule
 
 # Calcul places disponibles selon trajet populaire ou pas
 
