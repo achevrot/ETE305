@@ -2,128 +2,159 @@ import pandas as pd
 import numpy as np
 import pulp
 from time import time
+from tqdm import tqdm
 
 debut = time()
 
+# Fonction utilitaire
+def append_row(df, row):
+    return pd.concat([df, pd.DataFrame([row], columns=row.index)]).reset_index(drop=True)
+
+def optim(n, m, indice, passagers_init, place_train, avions, CO2, logfile):
+    fichier_log = open("log/"+logfile,'a')
+
+    # Futures variables de décision
+    passagers = np.empty((n,m), dtype=object)
+    statut_vol = np.empty((n,m), dtype=object)
+    N_avions = np.empty(m, dtype=object)
+
+    # Déclaration problème
+    prob = pulp.LpProblem("Optim", pulp.LpMinimize)
+
+    # Variables de décision
+    for i in range(n):
+        for j in range(m):
+            statut_vol[i,j] = pulp.LpVariable('statut_{}_{}'.format(i,j),cat=pulp.LpBinary)
+            passagers[i,j] = pulp.LpVariable('passagers_{}_{}'.format(i,j), cat=pulp.LpInteger)
+    for j in range(m):
+        N_avions[j] = pulp.LpVariable('dispo_{}'.format(j), cat=pulp.LpInteger)
+
+    # Contraintes
+    for i in range(n):
+        for j in range(m):
+            prob += passagers[i,j] >= 0
+            #prob += np.sum(passagers,axis=1)[i] <= passagers_init[i]
+            prob += passagers[i,j] <= passagers_init[i]
+            prob += passagers[i,j] <= statut_vol[i,j] * avions['Capacity'][j]
+            prob += statut_vol[i].sum() <= 1
+
+    prob += (passagers_init - np.sum(passagers,axis=1)).sum() <= place_train
+
+    for j in range(m):
+        prob += N_avions[j] >= avions['N_0'][j]
+        prob += np.sum(statut_vol, axis=0)[j] <= N_avions[j]
+
+    # Fonction objectif
+    print(len(CO2),"CO2")
+    print(statut_vol.shape,"statut_vol")
+    print(N_avions.shape,"N_avions")
+    print(avions["N_0"],"avions")
+
+    prob += pulp.lpSum(np.multiply(CO2, statut_vol)) + pulp.lpSum(np.multiply(N_avions - avions['N_0'],avions['CO2_construction (kg)']))
+
+    # Problem solving
+    status = prob.solve(pulp.GLPK())
+    fichier_log.write("Status: "+pulp.LpStatus[status]+"\n")
+
+    fichier_log.write("Variables: \n")
+    for i in range(n):
+        for j in range(m):
+            if pulp.value(passagers[i,j]) != 0.:
+                #print(pulp.value(statut_vol[i,j]), end=' ')
+                fichier_log.write("i"+str(i)+"j"+str(j)+str(pulp.value(passagers[i,j]))+'\n')
+    fichier_log.write("\n")
+    fichier_log.write("Création d'avions \n")
+
+    for j in range(m):
+        fichier_log.write(str(j)+str(pulp.value(N_avions[j])-avions['N_0'][j])+'\n')
+
+    statut_vol_fin = np.empty((n,m))
+    for i in range(n):
+        for j in range(m):
+            statut_vol_fin[i,j] = pulp.value(statut_vol[i,j])
+
+    CO2_fin = np.multiply(CO2,statut_vol_fin).sum()
+
+    fichier_log.write("Début : " + str(CO2_depart) + "\n")
+    fichier_log.write("Fin : " + str(CO2_fin) + "\n")
+    fichier_log.write("Delta CO2 économisé : " + str(CO2_depart-CO2_fin))
+
+    return(status)
+
 # Données
 
-print("-----  Création des données   -----")
-
+print("----- Création des données -----")
 
 # vols notés i, de 1 à n
 flights = pd.read_csv('flights_and_emissions.csv')
 n = len(flights)
 
 # Faire sur un nombre réduit de vols (décommenter si besoin)
-TAILLE = 100*2
-# flights = flights.head(TAILLE)
-# n = len(flights)
+#TAILLE = 100
+#flights = flights.head(TAILLE)
+#n = len(flights)
+
+# émissions CO2 des vols avant optim
+CO2_depart = np.sum(flights["Emissions_kgCO2eq"].to_numpy())
 
 # types d'avions notés j, de 1 à m
 avions = pd.read_csv('tableau_recap_avions.csv')
 #avions.sort_values(by=['N_0'])
 m = len(avions)
-#N_avions = np.empty(m, dtype=object)
-
-# Extraction de tableaux utiles :
-AC_type_vol = flights['AC Type']
-lat_departs = flights['ADEP Latitude']
-lon_departs = flights['ADES Longitude']
-lat_arrivees = flights['ADEP Latitude']
-lon_arrivees = flights['ADES Longitude']
-AC_type = avions['AC Type']
-
-# tableau contenant les s_{i,j}
-statut_vol = np.empty((n,m), dtype=object)
-statut_depart = np.zeros((n,m))
-for i in range(n):
-    for j in range(m):
-        if AC_type_vol[i] == AC_type[j]:
-            statut_depart[i,j] = 1
-
-# Au debut, chaque vol doit être effectué par un et un seul avion.
-assert statut_depart.sum() == len(flights), "Erreur, certains vols sont effectués par 0 ou >1 avion"
-
-# émissions CO2 des vols avant optim
-CO2_init = flights["Emissions_kgCO2eq"].to_numpy()
-
-# nombre de passagers avant optim
-passagers_init = np.empty(n)
-for i in range(n):
-    passagers_init[i] = flights["capacity"][i]
-
-# nombre de passagers variable
-passagers = np.empty((n,m), dtype=object)
 
 # Tableau CO2 total
 CO2 = np.load("CO2.npy")
-CO2 = CO2[:n]
 
-#PLACE_TRAIN = (82000000 / 0.314 - 82000000) / 12
-PLACE_TRAIN = 100 * n
+# Trains
+trains = pd.read_csv('Tableau_recap_train.csv')
+PLACE_TRAINS = trains['Places dispo par jour'] #* 30 # Pour un mois
+couples_villes = trains[['Ville_1','Ville_2']]
+t = len(trains)
 
-CO2_depart = np.sum(CO2_init)
+# Tableaux de vol par couple de ville
+"""
+vols_par_trains = []
+CO2_par_trains = []
+for indice in range(t):
+    vols_par_trains.append(pd.DataFrame(columns=flights.columns))
+    CO2_par_trains.append([])
+df_aeroport_ville = pd.read_csv('Aéroports_villes.csv')
 
-print("----- Début de l'optimisation -----")
+for i in tqdm(range(len(flights))):
+    ap1 = flights['ADEP'].iloc[i]
+    ap2 = flights['ADES'].iloc[i]
+    v1 = df_aeroport_ville[df_aeroport_ville['icao'] == ap1]['city'].values[0]
+    v2 = df_aeroport_ville[df_aeroport_ville['icao'] == ap2]['city'].values[0]
+    indice = trains.index[trains['Ville_1'].eq(v1) & trains['Ville_2'].eq(v2)][0]
+    vols_par_trains[indice] = append_row(vols_par_trains[indice],flights.iloc[i])
+    CO2_par_trains[indice].append(CO2[i])
+for i in range(t):
+    print(len(CO2_par_trains[i]))
 
-prob = pulp.LpProblem("Optim", pulp.LpMinimize)
+np.save("vols_par_trains",vols_par_trains)
+np.save("CO2_par_trains",CO2_par_trains)
+"""
+vols_par_trains = np.load("vols_par_trains.npy", allow_pickle = True)
+CO2_par_trains = np.load("CO2_par_trains.npy", allow_pickle = True)
+for i in range(CO2_par_trains.shape[0]):
+    assert len(CO2_par_trains[i])==len(vols_par_trains[i]), "Erreur, pas autant de valeur d'émissions de CO2 que de vols"
 
-# Variables de décision
-for i in range(n):
-    for j in range(m):
-        statut_vol[i,j] = pulp.LpVariable('statut_{}_{}'.format(i,j),cat=pulp.LpBinary)
-        passagers[i,j] = pulp.LpVariable('passagers_{}_{}'.format(i,j), cat=pulp.LpInteger)
-#for j in range(m):
-    #N_avions[j] = pulp.LpVariable('dispo_{}'.format(j), cat=pulp.LpInteger)
+# Optim pour chaque couple de ville
+print("-----  Optimisation        -----")
 
-# Contraintes
-for i in range(n):
-    for j in range(m):
-        prob += passagers[i,j] >= 0
-        #prob += np.sum(passagers,axis=1)[i] <= passagers_init[i]
-        prob += passagers[i,j] <= passagers_init[i]
-        prob += passagers[i,j] <= statut_vol[i,j] * avions['Capacity'][j]
-        prob += statut_vol[i].sum() <= 1
+for indice_trajet in tqdm(range(t)):
+    vols = vols_par_trains[indice_trajet]
+    n = len(vols)
+    logfile = 'log_trajet'+str(indice_trajet)+'.txt'
 
-prob += (passagers_init - np.sum(passagers,axis=1)).sum() <= PLACE_TRAIN
+    # nombre de passagers avant optim
+    passagers_init = np.empty(n)
+    for i in range(n):
+        passagers_init[i] = vols["capacity"][i]
 
-#for j in range(m):
-    #prob += N_avions[j] >= avions['N_0'][j]
-    #prob += np.sum(statut_vol, axis=0)[j] <= N_avions[j]
-
-# Fonction objectif
-prob += pulp.lpSum(np.multiply(CO2, statut_vol)) + pulp.lpSum(np.multiply(N_avions- avions['N_0'],avions['CO2_construction (kg)']))
-
-# Problem solving
-status = prob.solve(pulp.GLPK())
-print("Status: ",pulp.LpStatus[status])
-
-print("Variables: ", end=' ')
-for i in range(n):
-    for j in range(m):
-        if pulp.value(passagers[i,j]) != 0.:
-            #print(pulp.value(statut_vol[i,j]), end=' ')
-            print("i",i,"j",j,pulp.value(passagers[i,j]), end =' ')
-    print('\n')
-print()
-
-print("Création d'avions")
-
-for j in range(m):
-    print(j,pulp.value(N_avions[j])-avions['N_0'][j],end=' ')
-    print('\n')
-
-statut_vol_fin = np.empty((n,m))
-for i in range(n):
-    for j in range(m):
-        statut_vol_fin[i,j] = pulp.value(statut_vol[i,j])
-
-CO2_fin = np.multiply(CO2,statut_vol_fin).sum()
-
-print("Début : " + str(CO2_depart))
-print("Fin : " + str(CO2_fin))
-print("Delta CO2 économisé : " + str(CO2_depart-CO2_fin))
-
+    res_optim = optim(n, m, indice_trajet, passagers_init, PLACE_TRAINS[indice_trajet], avions, CO2_par_trains[indice_trajet], logfile)
+    print(res_optim)
+    
 fin = time()
 
 print("Temps total : ", fin-debut, " s")
