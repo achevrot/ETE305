@@ -11,11 +11,13 @@ list_capacity = []
 list_mass = []
 list_CO2_construction = []
 
+"""
 # Effectif
 for i in range(len(df_flights.index)):
     for j in range(len(list_ac)):
         if df_flights['AC Type'].iloc[i] == list_ac[j]:
             nb_type_ac[j] += 1
+"""
 
 # Capacity and mass
 for j in range(len(list_ac)):
@@ -32,6 +34,6 @@ df_effectif_ac['AC Type'] = list_ac
 df_effectif_ac['Capacity'] = list_capacity
 df_effectif_ac['Mass (kg)'] = list_mass
 df_effectif_ac['CO2_construction (kg)'] = list_CO2_construction
-df_effectif_ac['N_0'] = nb_type_ac
+#df_effectif_ac['N_0'] = nb_type_ac
 
 df_effectif_ac.to_csv('tableau_recap_avions.csv')
