@@ -68,7 +68,7 @@ def optim(m, passagers_init, CO2_depart, place_train, avions, CO2_avions, CO2_tr
     fichier_log = open(logfile,'a')
     fichier_log.write("Status: "+pulp.LpStatus[status]+"\n")
     fichier_log.write("Valeurs finales des variables de décision: \n")
-    fichier_log.write("j,AC Type,Capacity,passagers_init,nb_passagers,N_0,Besoin\n")
+    fichier_log.write("j,AC Type,Capacity,passagers_init,nb_passagers,N_0,nb_avions_ceil,nb_nouv_avions\n")
     nb_passagers_finaux = 0
     passagers_finaux = np.empty(m)
     for j in range(m):
@@ -80,7 +80,9 @@ def optim(m, passagers_init, CO2_depart, place_train, avions, CO2_avions, CO2_tr
                         str(passagers_init[j])+","+\
                         str(passagers_courant)+","+\
                         str(avions['N_0'][j])+","+\
-                        str(np.ceil(passagers_courant/avions['Capacity'][j])-avions['N_0'][j])+'\n')
+                        str(pulp.value(nb_avions_ceil[j]))+","+\
+                        str(pulp.value(nb_nouv_avions[j]))+'\n')
+
         nb_passagers_finaux += passagers_courant
     fichier_log.write("Nombre de passagers finaux : "+str(nb_passagers_finaux)+"\n")
     
@@ -157,7 +159,7 @@ print("-----  Optimisation        -----")
 
 for indice_trajet in tqdm(range(t)):
     avions['N_0'] = N_0[indice_trajet]
-    logfile = 'log6/log_trajet'+str(indice_trajet)+'.txt'
+    logfile = 'log3/log_trajet'+str(indice_trajet)+'.txt'
     f = open(logfile,'a')
     f.write("Ville_1 : "+str(trains['Ville_1'].iloc[indice_trajet])+'\n')
     f.write("Ville_2 : "+str(trains['Ville_2'].iloc[indice_trajet])+'\n')
