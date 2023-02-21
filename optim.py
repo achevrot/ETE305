@@ -53,7 +53,7 @@ def optim(n, m, indice, passagers_init, place_train, avions, CO2, logfile):
     prob += pulp.lpSum(np.multiply(CO2, statut_vol)) + pulp.lpSum(np.multiply(N_avions - avions['N_0'],avions['CO2_construction (kg)']))
 
     # Problem solving
-    status = prob.solve(pulp.GLPK())
+    status = prob.solve(pulp.GLPK(msg=True,timeLimit=72,keepFiles=True))
     fichier_log.write("Status: "+pulp.LpStatus[status]+"\n")
 
     fichier_log.write("Variables: \n")
@@ -107,7 +107,7 @@ CO2 = np.load("CO2.npy")
 
 # Trains
 trains = pd.read_csv('Tableau_recap_train.csv')
-PLACE_TRAINS = trains['Places dispo par jour'] #* 30 # Pour un mois
+PLACE_TRAINS = trains['Places dispo par jour'] * 10 # Pour un mois
 couples_villes = trains[['Ville_1','Ville_2']]
 t = len(trains)
 

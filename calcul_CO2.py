@@ -5,7 +5,6 @@ from tqdm import tqdm
 
 df_flights = pd.read_csv('201903_interieur.csv')
 df_coeff_ac = pd.read_csv('ac_model_coefficients.csv')
-# df_corres = pd.read_csv('Correspondances.csv') # pas utilisé ?
 
 list_emissions = []
 list_avions_non_rep = []
