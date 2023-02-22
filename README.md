@@ -65,8 +65,6 @@ Il y a donc 52x3 = 156 variables de décisions pour chaque trajet.
 ### Fonction objectif
 On veut minimiser : $(\sum_j {CO_2}_j\times nb_avions[j]+\sum_j{CO_2}_{train}\times(passagers_{init}-\sum_j nb_passagers[j])+\sum_j {{CO_2}_{constr}}_j\times nb_nouv_avions[j])/1000$
 
-On veut minimiser, pour chaque couple de ville : $(\sum_j{CO_2}_j\times$ `nb_avions[j]` $+\sum_j{CO_2}_{train}\times(passagers_{init} -\sum_j$ `nb_passagers[j]` $) + \sum_j {{CO_2}_{constr}}_j\times$ `nb_nouv_avions[j]`$) /1000$
-
 Les valeurs sont divisées par 1000, pour passer en tonnes de CO$_2$ et éviter d'avoir des valeurs trop élevées, plus compliquées à traiter informatiquement.
 
 ### Remarques
