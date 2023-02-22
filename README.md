@@ -54,13 +54,13 @@ Il y a donc 52x3 = 156 variables de décisions pour chaque trajet.
 
 ### Contraintes
 
-- Le nombre de passagers doit être positif ou nul : $\forall \quad j$ `nb_passagers[j]` $\geq 0$
+- Le nombre de passagers doit être positif ou nul : $\forall j\quad$ `nb_passagers[j]` $\geq 0$
 - On ne crée pas de nouveaux passagers : $\sum_j$ `nb_passagers[j]` $\leq$ `passagers_init` $\quad\Rightarrow\quad 0\leq$  `passagers_init` - $\sum_j$ `nb_passagers[j]`
 - Le nombre de personnes prenant le train ne doit pas excéder le nombre de places libres en train : `passagers_init` - $\sum_j$ `nb_passagers[j]` $\leq$ `place_train`
-- Le nombre de vols doit être positif ou nul : $\forall \quad j$ `nb_avions[j]` $\geq 0$
-- Le nombre de nouveaux avions doit être positif ou nul : $\forall \quad j$ `nb_nouv_avions[j]` $\geq 0$
-- Le nombre d'avions de type $j$ doit être égal au rapport entre le nombre de passagers empruntant un avion de type $j$ et la capacité de l'avion. Comme ce dernier n'est pas forcément un nombre entier, cette contrainte est définie comme étant élastique, afin d'avoir une tolérance sur l'égalité : $\forall j$ `nb_passagers[j]` - `nb_avions[j]` $\times$ `capacite[j]` $=0$
-- Le nombre de passagers ne peut pas excéder la capacité maximale de tous les vols disponibles : $\forall j $ `nb_passagers[j]` $\leq$ `capacite[j]` $\times({N_0}_j-$ `nb_nouv_avions[j]` $)$
+- Le nombre de vols doit être positif ou nul : $\forall j\quad$ `nb_avions[j]` $\geq 0$
+- Le nombre de nouveaux avions doit être positif ou nul : $\forall j\quad$ `nb_nouv_avions[j]` $\geq 0$
+- Le nombre d'avions de type $j$ doit être égal au rapport entre le nombre de passagers empruntant un avion de type $j$ et la capacité de l'avion. Comme ce dernier n'est pas forcément un nombre entier, cette contrainte est définie comme étant élastique, afin d'avoir une tolérance sur l'égalité : $\forall j\quad$ `nb_passagers[j]` - `nb_avions[j]` $\times$ `capacite[j]` $=0$
+- Le nombre de passagers ne peut pas excéder la capacité maximale de tous les vols disponibles : $\forall j \quad$ `nb_passagers[j]` $\leq$ `capacite[j]` $\times({N_0}_j-$ `nb_nouv_avions[j]` $)$
 
 ### Fonction objectif
 On veut minimiser, pour chaque couple de ville : $\sum_j {CO_2}_j\times$ `nb_avions[j]` $+ \sum_j {CO_2}_{train} \times\left($ `passagers_init` $-\sum_j \right) + \sum_j ${{CO_2}_{constr}}_j\times$ `nb_nouv_avions[j]`
