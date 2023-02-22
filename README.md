@@ -34,15 +34,15 @@ Période sélectionnée : mars 2019.
 
 ### Notations
 - $passagers^{init}$: nombre entier, nombre de passagers sur les vols initiaux de `v1` à `v2` pendant la période sélectionnée.
-- $place_{train}$ : nombre entier, nombre de places disponbibles dans les trains entre `v1` et `v2` pendant la période sélectionnée.
+- $place^{train}$ : nombre entier, nombre de places disponbibles dans les trains entre `v1` et `v2` pendant la période sélectionnée.
 - $n$ : nombre entier, nombre de vols entre `v1` et `v2` pendant la période sélectionnée.
 - $m = 52$ : nombre entier, nombre de type d'avions répertoriés dans notre analyse.
 - $j$ : nombre entier, indice utilisé pour parler d'un type d'avions, $j$ va de $0$ à $m-1$.
 - $N_0$ : tableau d'entiers, de taille $m$, contenant le nombre d'avions de type $j$ faisant le trajet de `v1` à `v2` pendant la période sélectionnée.
-- $CO_2$ : tableau de taille $m$, contenant les émissions de CO$_2$ (en kg) d'un avion de type $j$ faisant le trajet de `v1` à `v2`.
+- $CO_2$ : tableau de taille $m$, contenant les émissions de $CO_2$ (en kg) d'un avion de type $j$ faisant le trajet de `v1` à `v2`.
 - $capacite$ : tableau d'entiers, de taille $m$, contenant le nombre de passagers pouvant monter à bord d'un avion de type $j$.
-- ${CO_2}_{train}$ : valeur représentant les émissions de CO$_2$ (en kg) par passager pour un trajet en train entre `v1` et `v2`.
-- ${CO_2}_{constr}$ : tableau de taille $m$ contenant les émissions de CO$_2$ pour la construction d'un nouvel avion de type $j$.
+- ${CO_2}^{train}$ : valeur représentant les émissions de $CO_2$ (en kg) par passager pour un trajet en train entre `v1` et `v2`.
+- ${CO_2}^{constr}$ : tableau de taille $m$ contenant les émissions de $CO_2$ pour la construction d'un nouvel avion de type $j$.
 
 ### Variables de décision
 
@@ -65,7 +65,7 @@ Il y a donc 52x3 = 156 variables de décisions pour chaque trajet.
 ### Fonction objectif
 On veut minimiser : $(\sum_j {CO_2}_j\times$ `nb_avions[j]`$+\sum_j {CO_2}^{train} \times (passagers^{init}-\sum_j$ `nb_passagers[j]`$) + \sum_j {{CO_2}^{constr}}_j \times$ `nb_nouv_avions[j]` $)/1000$
 
-Les valeurs sont divisées par 1000, pour passer en tonnes de CO$_2$ et éviter d'avoir des valeurs trop élevées, plus compliquées à traiter informatiquement.
+Les valeurs sont divisées par 1000, pour passer en tonnes de $CO_2$ et éviter d'avoir des valeurs trop élevées, plus compliquées à traiter informatiquement.
 
 ### Remarques
 
