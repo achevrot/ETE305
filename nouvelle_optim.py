@@ -53,7 +53,6 @@ def optim(m, passagers_init, CO2_depart, place_train, avions, CO2_avions, CO2_tr
     prob += 0 <= np.sum(passagers_init) - np.sum(nb_passagers) <= place_train
     for j in range(m):
         prob.extend(pulp.LpConstraint(nb_passagers[j]-nb_avions_ceil[j]*avions['Capacity'][j],sense=0,name="Contrainte_{}".format(j),rhs=0).makeElasticSubProblem())
-        prob += 0 <= nb_avions_ceil[j] - nb_passagers[j] * inv_capacity[j] <= 1
         prob += nb_passagers[j] <= avions['Capacity'][j] * (avions['N_0'][j] + nb_nouv_avions[j])
 
     # Fonction objectif
@@ -159,7 +158,7 @@ print("-----  Optimisation        -----")
 
 for indice_trajet in tqdm(range(t)):
     avions['N_0'] = N_0[indice_trajet]
-    logfile = 'log3/log_trajet'+str(indice_trajet)+'.txt'
+    logfile = 'log4/log_trajet'+str(indice_trajet)+'.txt'
     f = open(logfile,'a')
     f.write("Ville_1 : "+str(trains['Ville_1'].iloc[indice_trajet])+'\n')
     f.write("Ville_2 : "+str(trains['Ville_2'].iloc[indice_trajet])+'\n')
