@@ -33,21 +33,21 @@ Nous avons ainsi dénombré 368 trajets. La modédlisation expliquée par la sui
 Période sélectionnée : mars 2019.
 
 ### Notations
-- `passagers_init`: nombre entier, nombre de passagers sur les vols initiaux de `v1` à `v2` pendant la période sélectionnée.
-- `place_train` : nombre entier, nombre de places disponbibles dans les trains entre `v1` et `v2` pendant la période sélectionnée.
+- $passagers_{init}$: nombre entier, nombre de passagers sur les vols initiaux de `v1` à `v2` pendant la période sélectionnée.
+- $place_{train}$ : nombre entier, nombre de places disponbibles dans les trains entre `v1` et `v2` pendant la période sélectionnée.
 - $n$ : nombre entier, nombre de vols entre `v1` et `v2` pendant la période sélectionnée.
 - $m = 52$ : nombre entier, nombre de type d'avions répertoriés dans notre analyse.
 - $j$ : nombre entier, indice utilisé pour parler d'un type d'avions, $j$ va de $0$ à $m-1$.
 - $N_0$ : tableau d'entiers, de taille $m$, contenant le nombre d'avions de type $j$ faisant le trajet de `v1` à `v2` pendant la période sélectionnée.
 - $CO_2$ : tableau de taille $m$, contenant les émissions de CO$_2$ (en kg) d'un avion de type $j$ faisant le trajet de `v1` à `v2`.
-- `capacite` : tableau d'entiers, de taille $m$, contenant le nombre de passagers pouvant monter à bord d'un avion de type $j$.
+- capacite : tableau d'entiers, de taille $m$, contenant le nombre de passagers pouvant monter à bord d'un avion de type $j$.
 - ${CO_2}_{train}$ : valeur représentant les émissions de CO$_2$ (en kg) par passager pour un trajet en train entre `v1` et `v2`.
 - ${CO_2}_{constr}$ : tableau de taille $m$ contenant les émissions de CO$_2$ pour la construction d'un nouvel avion de type $j$.
 
 ### Variables de décision
 
-- `nb_passagers[j]`, $j\in$ [\![0;m-1]\!] : indique le nombre de passagers prenant un vol de `v1` à `v2` dans un type d'avion $j$ pendant la période sélectionnée. Cette variable compte donc seulement les personnes prenant l'avion, et pas le train (le nombre de personnes prenant le train est `passagers_init` - $\sum_j$ `nb_passagers[j]`).
-- `nb_avions[j]`, $j\in$ [\![0;m-1]\!] : nombre de vols d'un avion de type $j$ de `v1` à `v2` pendant la période sélectionnée. C'est bien le nombre de vols, et pas le nombre d'appareils : si un même appareil réalise 2 fois le trajet, il compte pour 2 et pas 1.
+- `nb_passagers[j]`, $j\in [\![0;m-1]\!]$ : indique le nombre de passagers prenant un vol de `v1` à `v2` dans un type d'avion $j$ pendant la période sélectionnée. Cette variable compte donc seulement les personnes prenant l'avion, et pas le train (le nombre de personnes prenant le train est $passagers_{init} - \sum_j$ `nb_passagers[j]`).
+- `nb_avions[j]`, $j\in [0,m-1]$ : nombre de vols d'un avion de type $j$ de `v1` à `v2` pendant la période sélectionnée. C'est bien le nombre de vols, et pas le nombre d'appareils : si un même appareil réalise 2 fois le trajet, il compte pour 2 et pas 1.
 - `nb_nouv_avions[j]`, $j\in$ [\![0;m-1]\!] : quantité de nouveaux avions de type $j$ à construire.
 
 Il y a donc 52x3 = 156 variables de décisions pour chaque trajet.
@@ -55,15 +55,15 @@ Il y a donc 52x3 = 156 variables de décisions pour chaque trajet.
 ### Contraintes
 
 - Le nombre de passagers doit être positif ou nul : $\forall j\quad$ `nb_passagers[j]` $\geq 0$
-- On ne crée pas de nouveaux passagers : $\sum_j$ `nb_passagers[j]` $\leq$ `passagers_init` $\quad\Rightarrow\quad 0\leq$  `passagers_init` - $\sum_j$ `nb_passagers[j]`
-- Le nombre de personnes prenant le train ne doit pas excéder le nombre de places libres en train : `passagers_init` - $\sum_j$ `nb_passagers[j]` $\leq$ `place_train`
+- On ne crée pas de nouveaux passagers : $\sum_j$ `nb_passagers[j]` $\leq passagers_{init}\quad\Rightarrow\quad 0\leq passagers_{init}-\sum_j$ `nb_passagers[j]`
+- Le nombre de personnes prenant le train ne doit pas excéder le nombre de places libres en train : $passagers_{init}-\sum_j$ `nb_passagers[j]` $\leq place_{train}$
 - Le nombre de vols doit être positif ou nul : $\forall j\quad$ `nb_avions[j]` $\geq 0$
 - Le nombre de nouveaux avions doit être positif ou nul : $\forall j\quad$ `nb_nouv_avions[j]` $\geq 0$
-- Le nombre d'avions de type $j$ doit être égal au rapport entre le nombre de passagers empruntant un avion de type $j$ et la capacité de l'avion. Comme ce dernier n'est pas forcément un nombre entier, cette contrainte est définie comme étant élastique, afin d'avoir une tolérance sur l'égalité : $\forall j\quad$ `nb_passagers[j]` - `nb_avions[j]` $\times$ `capacite[j]` $=0$
-- Le nombre de passagers ne peut pas excéder la capacité maximale de tous les vols disponibles : $\forall j \quad$ `nb_passagers[j]` $\leq$ `capacite[j]` $\times({N_0}_j-$ `nb_nouv_avions[j]` $)$
+- Le nombre d'avions de type $j$ doit être égal au rapport entre le nombre de passagers empruntant un avion de type $j$ et la capacité de l'avion. Comme ce dernier n'est pas forcément un nombre entier, cette contrainte est définie comme étant élastique, afin d'avoir une tolérance sur l'égalité : $\forall j\quad$ `nb_passagers[j]` - `nb_avions[j]` $\times capacite_j = 0$
+- Le nombre de passagers ne peut pas excéder la capacité maximale de tous les vols disponibles : $\forall j \quad$ `nb_passagers[j]` $\leq capacite_j \times({N_0}_j-$ `nb_nouv_avions[j]` $)$
 
 ### Fonction objectif
-On veut minimiser, pour chaque couple de ville : $( \sum_j {CO_2}_j\times$ `nb_avions[j]` $+ \sum_j {CO_2}_{train} \times($ `passagers_init` $-\sum_j$ `nb_passagers[j]` $) + \sum_j {{CO_2}_{constr}}_j\times$ `nb_nouv_avions[j]`$)/1000$
+On veut minimiser, pour chaque couple de ville : $( \sum_j {CO_2}_j \times$ `nb_avions[j]` $+ \sum_j {CO_2}_{train} \times( passagers_{init} $-\sum_j$ `nb_passagers[j]` $) + \sum_j {{CO_2}_{constr}}_j\times$ `nb_nouv_avions[j]`$)/1000$
 
 Les valeurs sont divisées par 1000, pour passer en tonnes de CO$_2$ et éviter d'avoir des valeurs trop élevées, plus compliquées à traiter informatiquement.
 
