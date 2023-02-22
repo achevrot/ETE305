@@ -63,7 +63,7 @@ Il y a donc 52x3 = 156 variables de décisions pour chaque trajet.
 - Le nombre de passagers ne peut pas excéder la capacité maximale de tous les vols disponibles : $\forall j \quad$ `nb_passagers[j]` $\leq capacite_j \times({N_0}_j-$ `nb_nouv_avions[j]`)
 
 ### Fonction objectif
-On veut minimiser : $(\sum_j {CO_2}_j\times nb_avions[j]$ 
+On veut minimiser : $(\sum_j {CO_2}_j\times$ `nb_avions[j]` $)$
 
 Les valeurs sont divisées par 1000, pour passer en tonnes de CO$_2$ et éviter d'avoir des valeurs trop élevées, plus compliquées à traiter informatiquement.
 
