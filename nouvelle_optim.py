@@ -7,7 +7,7 @@ from geopy.distance import great_circle
 import warnings
 warnings.filterwarnings("ignore")
 
-SCENARIO = 1
+SCENARIO = 5
 
 debut = time()
 
@@ -164,13 +164,12 @@ CO2_debut = np.load("CO2_debut.npy")
 passagers_init = np.load("passagers_init.npy")
 N_0 = np.load("N_0.npy")
 CO2_avions = np.load("CO2_avions.npy")
-print(CO2_avions)
 
 print("-----  Optimisation        -----")
 
 for indice_trajet in tqdm(range(t)):
     avions['N_0'] = N_0[indice_trajet]
-    logfile = 'log-05-05-258/log_trajet'+str(indice_trajet)+'.txt'
+    logfile = 'log-scenario5-05-03-32/log_trajet'+str(indice_trajet)+'.txt'
     f = open(logfile,'a')
     f.write("Ville_1 : "+str(trains['Ville_1'].iloc[indice_trajet])+'\n')
     f.write("Ville_2 : "+str(trains['Ville_2'].iloc[indice_trajet])+'\n')

@@ -5,10 +5,10 @@ df_aeroport_ville = pd.read_csv('Aéroports_villes.csv')
 df_all_flights = pd.read_csv('flights_and_emissions.csv')
 
 # Paramètres de décision
-SCENARIO = 2
-FACTEUR_EMISSION = 0.005 # Allemagne : 0.0445
-taux_grands_trajets = 0.7
-taux_remplissage_objectif = 0.8
+SCENARIO = 5
+taux_remplissage_objectif = 0.5
+taux_grands_trajets = 0.3
+FACTEUR_EMISSION = 0.032 
 
 couple_v1_v2 = []
 distance = []
