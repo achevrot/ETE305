@@ -4,6 +4,11 @@ import pandas as pd
 df_aeroport_ville = pd.read_csv('Aéroports_villes.csv')
 df_all_flights = pd.read_csv('flights_and_emissions.csv')
 
+# Paramètres de décision
+FACTEUR_EMISSION = 0.0445
+taux_grands_trajets = 0.7
+taux_remplissage_objectif = 0.8
+
 couple_v1_v2 = []
 distance = []
 emissions_train = []
@@ -19,12 +24,11 @@ for i in range(len(df_all_flights)):
         geo_ville_2 = (df_all_flights['ADES Latitude'][i], df_all_flights['ADES Longitude'][i])
         dgc = great_circle(geo_ville_1, geo_ville_2).km
         distance.append(round(dgc,3)) # Arrondi à 3 chiffres après la virgule
-        emissions_train.append(round(dgc * 0.0445,3)) # Arrondi à 3 chiffres après la virgule
+        emissions_train.append(round(dgc * FACTEUR_EMISSION,3)) # Arrondi à 3 chiffres après la virgule
 
 # Calcul places disponibles selon trajet populaire ou pas
 
-taux_grands_trajets = 0.7
-taux_remplissage_objectif = 0.8
+
 
 taux_remplissage_actuel = 0.314
 passagers_transportes = 82000000 / 12
