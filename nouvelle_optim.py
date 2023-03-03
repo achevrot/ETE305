@@ -7,10 +7,11 @@ from geopy.distance import great_circle
 import warnings
 warnings.filterwarnings("ignore")
 
+SCENARIO = 1
+
 debut = time()
 
 DF_COEFF_AC = pd.read_csv('ac_model_coefficients.csv')
-
 
 # Fonctions utilitaires
 def append_row(df, row):
@@ -26,7 +27,6 @@ def CO2_vol(lat_depart, lon_depart, lat_arrivee, lon_arrivee, ac):
         ap_1 = (lat_depart, lon_depart)
         ap_2 = (lat_arrivee, lon_arrivee)
         dgc = great_circle(ap_1, ap_2).km
-
         fuel = alpha * dgc ** 2 + beta * dgc + gamma
         CO2 = fuel * 3.16
     else:
@@ -37,7 +37,7 @@ def optim(m, passagers_init, CO2_depart, place_train, avions, CO2_avions, CO2_tr
     inv_capacity = np.divide(np.ones(m),avions['Capacity'])
     # Futures variables de décision
     nb_passagers   = np.empty(m, dtype=object)
-    nb_avions_ceil = np.empty(m, dtype=object)
+    nb_vols = np.empty(m, dtype=object)
     nb_nouv_avions = np.empty(m, dtype=object)
 
     # Déclaration problème
@@ -46,17 +46,23 @@ def optim(m, passagers_init, CO2_depart, place_train, avions, CO2_avions, CO2_tr
     # Variables de décision
     for j in range(m):
         nb_passagers[j] = pulp.LpVariable('nb_passagers_{}'.format(j), 0, None, cat=pulp.LpInteger)
-        nb_avions_ceil[j] = pulp.LpVariable('nb_avions_ceil_{}'.format(j), 0, None, cat=pulp.LpInteger)
+        nb_vols[j]      = pulp.LpVariable('nb_vols_{}'.format(j), 0, None, cat=pulp.LpInteger)
         nb_nouv_avions[j] = pulp.LpVariable('nb_nouv_avions_{}'.format(j), 0, None, cat=pulp.LpInteger)
 
-    # Contrainte
-    prob += 0 <= np.sum(passagers_init) - np.sum(nb_passagers) <= place_train
+    # Contraintes
+    prob += np.sum(nb_passagers) <= passagers_init.sum()
+    prob += passagers_init.sum() - np.sum(nb_passagers) <= place_train
     for j in range(m):
-        prob.extend(pulp.LpConstraint(nb_passagers[j]-nb_avions_ceil[j]*avions['Capacity'][j],sense=0,name="Contrainte_{}".format(j),rhs=0).makeElasticSubProblem())
-        prob += nb_passagers[j] <= avions['Capacity'][j] * (avions['N_0'][j] + nb_nouv_avions[j])
+        #prob.extend(pulp.LpConstraint(nb_passagers[j]-nb_vols[j]*avions['Capacity'][j],sense=0,name="Contrainte_{}".format(j),rhs=0).makeElasticSubProblem())
+        prob += nb_passagers[j] <= avions['Capacity'][j] * (avions['N_0'][j] + 60*nb_nouv_avions[j])
+        prob += nb_passagers[j] <= avions['Capacity'][j] * nb_vols[j]
+        prob += nb_vols[j] <= avions['N_0'][j] + 60*nb_nouv_avions[j]
+        prob += 0 <= (pulp.lpSum(np.multiply(CO2_avions, nb_vols)) +\
+            pulp.lpSum(CO2_train * (np.sum(passagers_init) - np.sum(nb_passagers))) +\
+            pulp.lpSum(np.multiply(nb_nouv_avions, avions['CO2_construction (kg)'])))/1000
 
     # Fonction objectif
-    prob += (pulp.lpSum(np.multiply(CO2_avions, nb_avions_ceil)) +\
+    prob += (pulp.lpSum(np.multiply(CO2_avions, nb_vols)) +\
             pulp.lpSum(CO2_train * (np.sum(passagers_init) - np.sum(nb_passagers))) +\
             pulp.lpSum(np.multiply(nb_nouv_avions, avions['CO2_construction (kg)'])))/1000 # en tonnes pour éviter les trop gros nombres
 
@@ -67,7 +73,7 @@ def optim(m, passagers_init, CO2_depart, place_train, avions, CO2_avions, CO2_tr
     fichier_log = open(logfile,'a')
     fichier_log.write("Status: "+pulp.LpStatus[status]+"\n")
     fichier_log.write("Valeurs finales des variables de décision: \n")
-    fichier_log.write("j,AC Type,Capacity,passagers_init,nb_passagers,N_0,nb_avions_ceil,nb_nouv_avions\n")
+    fichier_log.write("j,AC Type,Capacity,passagers_init,nb_passagers,N_0,nb_vols,nb_nouv_avions\n")
     nb_passagers_finaux = 0
     passagers_finaux = np.empty(m)
     for j in range(m):
@@ -79,9 +85,10 @@ def optim(m, passagers_init, CO2_depart, place_train, avions, CO2_avions, CO2_tr
                         str(passagers_init[j])+","+\
                         str(passagers_courant)+","+\
                         str(avions['N_0'][j])+","+\
-                        str(pulp.value(nb_avions_ceil[j]))+","+\
+                        str(pulp.value(nb_vols[j]))+","+\
                         str(pulp.value(nb_nouv_avions[j]))+'\n')
-
+        if pulp.value(nb_nouv_avions[j]) > 0:
+            print("Nouvel avion construit !!! " + str(pulp.value(nb_nouv_avions[j])))
         nb_passagers_finaux += passagers_courant
     fichier_log.write("Nombre de passagers finaux : "+str(nb_passagers_finaux)+"\n")
     
@@ -111,9 +118,12 @@ CO2_flights = round(flights["Emissions_kgCO2eq"])
 # Types d'avions notés j, de 1 à m
 avions = pd.read_csv('tableau_recap_avions.csv')
 m = len(avions)
-
+"""
+for j in range(m):
+    avions['CO2_construction (kg)'] = 0
+"""
 # Trains
-trains = pd.read_csv('Tableau_recap_train.csv')
+trains = pd.read_csv('Tableau_recap_train'+str(SCENARIO)+'.csv')
 PLACE_TRAINS = trains['Places dispo par jour'] * 10 # Pour un mois
 CO2_trains = round(trains['Emissions_CO2 (kg/passager)'])
 t = len(trains)
@@ -140,10 +150,11 @@ for i in tqdm(range(n)): # itération sur tous les vols
     N_0[indice_trajet][j] += 1
     if CO2_avions[indice_trajet][j] == 0:
         lat_depart = flights['ADEP Latitude'].iloc[i]
-        lon_depart = flights['ADES Longitude'].iloc[i]
-        lat_arrivee = flights['ADEP Latitude'].iloc[i]
+        lon_depart = flights['ADEP Longitude'].iloc[i]
+        lat_arrivee = flights['ADES Latitude'].iloc[i]
         lon_arrivee = flights['ADES Longitude'].iloc[i]
-        CO2_avions[indice_trajet,j] = round(CO2_vol(lat_depart, lon_depart, lat_arrivee, lon_arrivee, AC_Type))
+        for j_avions in range(m):
+            CO2_avions[indice_trajet,j_avions] = CO2_vol(lat_depart, lon_depart, lat_arrivee, lon_arrivee, avions['AC Type'].iloc[j_avions])
 np.save("CO2_debut",CO2_debut)
 np.save("passagers_init",passagers_init)
 np.save("N_0",N_0)
@@ -153,12 +164,13 @@ CO2_debut = np.load("CO2_debut.npy")
 passagers_init = np.load("passagers_init.npy")
 N_0 = np.load("N_0.npy")
 CO2_avions = np.load("CO2_avions.npy")
+print(CO2_avions)
 
 print("-----  Optimisation        -----")
 
 for indice_trajet in tqdm(range(t)):
     avions['N_0'] = N_0[indice_trajet]
-    logfile = 'log4/log_trajet'+str(indice_trajet)+'.txt'
+    logfile = 'log-05-05-258/log_trajet'+str(indice_trajet)+'.txt'
     f = open(logfile,'a')
     f.write("Ville_1 : "+str(trains['Ville_1'].iloc[indice_trajet])+'\n')
     f.write("Ville_2 : "+str(trains['Ville_2'].iloc[indice_trajet])+'\n')

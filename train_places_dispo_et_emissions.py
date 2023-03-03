@@ -5,7 +5,8 @@ df_aeroport_ville = pd.read_csv('Aéroports_villes.csv')
 df_all_flights = pd.read_csv('flights_and_emissions.csv')
 
 # Paramètres de décision
-FACTEUR_EMISSION = 0.0445
+SCENARIO = 2
+FACTEUR_EMISSION = 0.005 # Allemagne : 0.0445
 taux_grands_trajets = 0.7
 taux_remplissage_objectif = 0.8
 
@@ -27,8 +28,6 @@ for i in range(len(df_all_flights)):
         emissions_train.append(round(dgc * FACTEUR_EMISSION,3)) # Arrondi à 3 chiffres après la virgule
 
 # Calcul places disponibles selon trajet populaire ou pas
-
-
 
 taux_remplissage_actuel = 0.314
 passagers_transportes = 82000000 / 12
@@ -71,6 +70,6 @@ df_recap_train['Distance (km)'] = distance
 df_recap_train['Places dispo par jour'] = places_dispo_train
 df_recap_train['Emissions_CO2 (kg/passager)'] = emissions_train
 
-df_recap_train.to_csv('Tableau_recap_train.csv')
+df_recap_train.to_csv('Tableau_recap_train'+str(SCENARIO)+'.csv')
 
 
