@@ -7,11 +7,11 @@ from geopy.distance import great_circle
 import warnings
 warnings.filterwarnings("ignore")
 
-SCENARIO = 5
+SCENARIO = 1
 
 debut = time()
 
-DF_COEFF_AC = pd.read_csv('ac_model_coefficients.csv')
+DF_COEFF_AC = pd.read_csv('data/ac_model_coefficients.csv')
 
 # Fonctions utilitaires
 def append_row(df, row):
@@ -45,8 +45,8 @@ def optim(m, passagers_init, CO2_depart, place_train, avions, CO2_avions, CO2_tr
 
     # Variables de décision
     for j in range(m):
-        nb_passagers[j] = pulp.LpVariable('nb_passagers_{}'.format(j), 0, None, cat=pulp.LpInteger)
-        nb_vols[j]      = pulp.LpVariable('nb_vols_{}'.format(j), 0, None, cat=pulp.LpInteger)
+        nb_passagers[j]   = pulp.LpVariable('nb_passagers_{}'.format(j), 0, None, cat=pulp.LpInteger)
+        nb_vols[j]        = pulp.LpVariable('nb_vols_{}'.format(j), 0, None, cat=pulp.LpInteger)
         nb_nouv_avions[j] = pulp.LpVariable('nb_nouv_avions_{}'.format(j), 0, None, cat=pulp.LpInteger)
 
     # Contraintes
@@ -76,9 +76,13 @@ def optim(m, passagers_init, CO2_depart, place_train, avions, CO2_avions, CO2_tr
     fichier_log.write("j,AC Type,Capacity,passagers_init,nb_passagers,N_0,nb_vols,nb_nouv_avions\n")
     nb_passagers_finaux = 0
     passagers_finaux = np.empty(m)
+    nb_vols_final = np.empty(m)
+    nb_nouv_avions_final = np.empty(m)
     for j in range(m):
         passagers_courant = pulp.value(nb_passagers[j])
         passagers_finaux[j] = passagers_courant
+        nb_vols_final[j] = pulp.value(nb_vols[j])
+        nb_nouv_avions_final[j] = pulp.value(nb_nouv_avions[j])
         fichier_log.write(str(j)+","+\
                         avions['AC Type'][j]+","+\
                         str(avions['Capacity'][j])+","+\
@@ -92,9 +96,9 @@ def optim(m, passagers_init, CO2_depart, place_train, avions, CO2_avions, CO2_tr
         nb_passagers_finaux += passagers_courant
     fichier_log.write("Nombre de passagers finaux : "+str(nb_passagers_finaux)+"\n")
     
-    CO2_fin_avions = np.sum(np.multiply(CO2_avions, np.ceil(np.multiply(passagers_finaux,inv_capacity))))
+    CO2_fin_avions = np.sum(np.multiply(CO2_avions, nb_vols_final))
     CO2_fin_trains = np.sum(CO2_train * (np.sum(passagers_init) - np.sum(passagers_finaux)))
-    CO2_fin_constr = np.sum(np.multiply(np.maximum(0, np.ceil(np.multiply(passagers_finaux,inv_capacity))-avions['N_0']),avions['CO2_construction (kg)']))
+    CO2_fin_constr = np.sum(np.multiply(nb_nouv_avions_final,avions['CO2_construction (kg)']))
     CO2_fin = CO2_fin_avions + CO2_fin_trains + CO2_fin_constr
     fichier_log.write("Emissions de CO2 totales, en tonnes : ")
     fichier_log.write("Début : " + str(CO2_depart/1000) + "\n")
@@ -111,26 +115,26 @@ def optim(m, passagers_init, CO2_depart, place_train, avions, CO2_avions, CO2_tr
 print("----- Création des données -----")
 
 # Vols notés i, de 1 à n
-flights = pd.read_csv('flights_and_emissions.csv')
+flights = pd.read_csv('data/flights_and_emissions.csv')
 n = len(flights)
 CO2_flights = round(flights["Emissions_kgCO2eq"])
 
 # Types d'avions notés j, de 1 à m
-avions = pd.read_csv('Tableau_recap_avions.csv')
+avions = pd.read_csv('data/Tableau_recap_avions.csv')
 m = len(avions)
 """
 for j in range(m):
     avions['CO2_construction (kg)'] = 0
 """
 # Trains
-trains = pd.read_csv('Tableau_recap_train'+str(SCENARIO)+'.csv')
+trains = pd.read_csv('data/Tableau_recap_train'+str(SCENARIO)+'.csv')
 PLACE_TRAINS = trains['Places dispo par jour'] * 10 # Pour un mois
 CO2_trains = round(trains['Emissions_CO2 (kg/passager)'])
 t = len(trains)
 
 # Collecte des données par couple de villes
 """
-df_aeroport_ville = pd.read_csv('Aéroports_villes.csv')
+df_aeroport_ville = pd.read_csv('data/airports_ICAO.csv',usecols=["icao","city"])
 CO2_debut = np.zeros(t)
 passagers_init = np.zeros((t,m))
 N_0 = np.zeros((t,m))
@@ -141,6 +145,7 @@ for i in tqdm(range(n)): # itération sur tous les vols
     ap2 = flights['ADES'].iloc[i]
     v1 = df_aeroport_ville[df_aeroport_ville['icao'] == ap1]['city'].values[0]
     v2 = df_aeroport_ville[df_aeroport_ville['icao'] == ap2]['city'].values[0]
+    print(v1,v2,i)
     indice_trajet = trains.index[trains['Ville_1'].eq(v1) & trains['Ville_2'].eq(v2)][0]
     # Sauvegarde des données par couple de villes :
     CO2_debut[indice_trajet] += CO2_flights[i]
@@ -169,7 +174,7 @@ print("-----  Optimisation        -----")
 
 for indice_trajet in tqdm(range(t)):
     avions['N_0'] = N_0[indice_trajet]
-    logfile = 'log-scenario5-05-03-32/log_trajet'+str(indice_trajet)+'.txt'
+    logfile = 'log/log-scenario1-08-07-32/log_trajet'+str(indice_trajet)+'.txt'
     f = open(logfile,'a')
     f.write("Ville_1 : "+str(trains['Ville_1'].iloc[indice_trajet])+'\n')
     f.write("Ville_2 : "+str(trains['Ville_2'].iloc[indice_trajet])+'\n')

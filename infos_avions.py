@@ -76,10 +76,6 @@ for j in range(len(list_ac)):
     list_capacity.append(capa)
 
 
-
-    constr = df_mass[df_mass['AC Type'] == list_ac[j]]['Impact CO2 construction (kg CO2)'].values[0]
-    list_CO2_construction.append(constr)
-
 # Masse
 Masse = dict()
 Masse['B734'] = 60000
@@ -144,7 +140,7 @@ dict_mass['Masse avion (kg)'] = list(mass)
 df_mass = pd.DataFrame(data=dict_mass)
 
 for j in range(len(list_ac)):
-    mass = df_mass[df_mass['AC Type'] == list_ac[j]]['Masse avion (kg)'].values[0]
+    mass = df_mass[df_mass['AC_type'] == list_ac[j]]['Masse avion (kg)'].values[0]
     list_mass.append(mass)
 
 # Émissions CO2 lors de la construction
@@ -162,7 +158,7 @@ dict_CO2['Impact CO2 construction (kg CO2)'] = list(CO2_values)
 df_CO2 = pd.DataFrame(data=dict_CO2)
 
 for j in range(len(list_ac)):
-    constr = df_CO2[df_CO2['AC Type'] == list_ac[j]]['Impact CO2 construction (kg CO2)'].values[0]
+    constr = df_CO2[df_CO2['AC_type'] == list_ac[j]]['Impact CO2 construction (kg CO2)'].values[0]
     list_CO2_construction.append(constr)
 
 # Sauvegarde 

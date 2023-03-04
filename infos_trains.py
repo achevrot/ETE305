@@ -1,12 +1,13 @@
 from geopy.distance import great_circle
+import numpy as np
 import pandas as pd
 import sys
 
 # Paramètres de décision
-SCENARIO = 5
-taux_remplissage_objectif = 0.5
+SCENARIO = 4
+taux_remplissage_objectif = 0.8
 taux_grands_trajets = 0.3
-FACTEUR_EMISSION = 0.032 
+FACTEUR_EMISSION = 0.032
 
 # Création des liens codes aéroports - ville 
 df_all_flights = pd.read_csv('data/flights_and_emissions.csv')
@@ -20,7 +21,6 @@ list_ADES = list(df_all_flights['ADES'].values)
 for j in range(len(list_ADES)):
     list_ADEP.append(list_ADES[j])
 list_airports = list(set(list_ADEP))
-print(len(list_airports))
 
 np_airports = df_airports_ED.to_numpy()
 np.set_printoptions(threshold=sys.maxsize)
