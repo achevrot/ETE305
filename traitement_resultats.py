@@ -1,7 +1,6 @@
 import os
 import numpy as np
 
-
 nb_erreur = 0
 CO2_fin = 0.
 CO2_debut = 0.
@@ -29,4 +28,3 @@ f.close()
 print("CO2 initial   : "+str(round(CO2_debut)/1000)+" tCO2")
 print("CO2 économisé : "+str(round(CO2_debut-CO2)/1000)+" tCO2")
 print("Nombe de cas pour lesquels l'optim n'a pas fonctionné : "+str(nb_erreur))
-
