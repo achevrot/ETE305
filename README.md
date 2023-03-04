@@ -89,12 +89,12 @@ Les valeurs sont divisées par 1000, pour passer en tonnes de $CO_2$ et éviter 
 
 ## À faire
 
-- Enlever les jets privés -> Constant, puis refaire tourner l'optim sur les différents scénarios -> Apolline
-- Nettoyer le repo git -> Apolline
-- Mise à jour du README -> Apolline
-- Analyse des résultats -> Constant
-- Finition de l'asbtract -> Floriane
-- Diaporama -> Floriane
+- [ ] Enlever les jets privés -> Constant, puis refaire tourner l'optim sur les différents scénarios -> Apolline
+- [x] Nettoyer le repo git -> Apolline
+- [x] Mise à jour du README -> Apolline
+- [ ] Analyse des résultats -> Constant
+- [ ] Finition de l'asbtract -> Floriane
+- [ ] Diaporama -> Floriane
 
 
 ## Tuto Github - en local
@@ -122,10 +122,10 @@ Si vous voulez partir de zéro sur un nouveau fichier, il faut d'abord créer le
 
 ## Sources :
 
-Selon l'ADEME, la construction d'un avion à un coût carbone de 40 kgCO2/kg d'avion.
+Selon l'ADEME, la construction d'un avion a un coût carbone de 40 kgCO2/kg d'avion.
 https://bilans-ges.ademe.fr/documentation/UPLOAD_DOC_FR/index.htm?aerien.htm
 D'après le rapport du Shift Project et Aero decarbo, un avion a une durée de vie de 15 à 25 ans. Nous prendrons donc 20 ans.
-Donc, sur une année, le coût carbone de la construction d'un avion est de 2kg de CO2 par kg d'avion, ou de 0,167kg de CO2 pas kg d'avion par mois.
+Donc, sur une année, le coût carbone de la construction d'un avion est de 2kg de CO2 par kg d'avion.
 
 
 Facteurs d'émission train SNCF : https://medias.sncf.com/sncfcom/rse/Methodologie-generale_guide-information-CO2.pdf
