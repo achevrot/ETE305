@@ -7,7 +7,7 @@ from geopy.distance import great_circle
 import warnings
 warnings.filterwarnings("ignore")
 
-SCENARIO = 1
+SCENARIO = 5
 
 debut = time()
 
@@ -91,8 +91,6 @@ def optim(m, passagers_init, CO2_depart, place_train, avions, CO2_avions, CO2_tr
                         str(avions['N_0'][j])+","+\
                         str(pulp.value(nb_vols[j]))+","+\
                         str(pulp.value(nb_nouv_avions[j]))+'\n')
-        if pulp.value(nb_nouv_avions[j]) > 0:
-            print("Nouvel avion construit !!! " + str(pulp.value(nb_nouv_avions[j])))
         nb_passagers_finaux += passagers_courant
     fichier_log.write("Nombre de passagers finaux : "+str(nb_passagers_finaux)+"\n")
     
@@ -174,7 +172,7 @@ print("-----  Optimisation        -----")
 
 for indice_trajet in tqdm(range(t)):
     avions['N_0'] = N_0[indice_trajet]
-    logfile = 'log/log-scenario1-08-07-32/log_trajet'+str(indice_trajet)+'.txt'
+    logfile = 'log/log-scenario5-05-03-32/log_trajet'+str(indice_trajet)+'.txt'
     f = open(logfile,'a')
     f.write("Ville_1 : "+str(trains['Ville_1'].iloc[indice_trajet])+'\n')
     f.write("Ville_2 : "+str(trains['Ville_2'].iloc[indice_trajet])+'\n')
