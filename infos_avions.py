@@ -148,7 +148,7 @@ for j in range(len(list_ac)):
     list_mass.append(mass)
 
 # Émissions CO2 lors de la construction
-impact_co2_par_kilo_avion = 2
+impact_co2_par_kilo_avion = 40/(20*12)
 co2_build = dict()
 for keys in Masse :
     co2_build[keys] = impact_co2_par_kilo_avion * Masse[keys]
