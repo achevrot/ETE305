@@ -34,6 +34,18 @@ Nous utilisons la bibliothèque PuLP de python.
 
 Période sélectionnée : mars 2019.
 
+### Scénarios
+
+Nous avons défini 5 scénarios, et nous avons fait tourner notre optimisation pour ces 5 scénarios, afin de comparer l'influence des différents paramètres.
+
+| Scénario | Taux de remplissage des trains | Taux de places attribuées aux grands trajets | Facteur d'émission du train |
+|----------|:------------------------------:|:--------------------------------------------:|-----------------------------|
+| 1 - Base | 0,8 | 0,7 | 32g/km-pers (Allemagne)|
+| 2 - VLT (Vive Le Train) | 0,8 | 0,7 | 5g/km-pers (France) |
+| 3 - TNR (Train Non Rempli) | 0,5 | 0,7 | 32g/km-pers (Allemagne)|
+| 4 - SPV (Surtout Petites Villes) | 0,8 | 0,3 | 32g/km-pers (Allemagne)|
+| 5 - NAT (Non Au Train) | 0,5 | 0,3 | 32g/km-pers (Allemagne)|
+
 ### Notations
 - $passagers^{init}$: nombre entier, nombre de passagers sur les vols initiaux de `v1` à `v2` pendant la période sélectionnée.
 - $place^{train}$ : nombre entier, nombre de places disponbibles dans les trains entre `v1` et `v2` pendant la période sélectionnée.
@@ -113,7 +125,7 @@ Si vous voulez partir de zéro sur un nouveau fichier, il faut d'abord créer le
 Selon l'ADEME, la construction d'un avion à un coût carbone de 40 kgCO2/kg d'avion.
 https://bilans-ges.ademe.fr/documentation/UPLOAD_DOC_FR/index.htm?aerien.htm
 D'après le rapport du Shift Project et Aero decarbo, un avion a une durée de vie de 15 à 25 ans. Nous prendrons donc 20 ans.
-Donc, sur une année, le coût carbone de la construction d'un avion est de 2kg de CO2 par kg d'avion.
+Donc, sur une année, le coût carbone de la construction d'un avion est de 2kg de CO2 par kg d'avion, ou de 0,167kg de CO2 pas kg d'avion par mois.
 
 
 Facteurs d'émission train SNCF : https://medias.sncf.com/sncfcom/rse/Methodologie-generale_guide-information-CO2.pdf
