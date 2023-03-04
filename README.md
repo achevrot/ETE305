@@ -41,7 +41,7 @@ Nous avons défini 5 scénarios, et nous avons fait tourner notre optimisation p
 | Scénario | Taux de remplissage des trains | Taux de places attribuées aux grands trajets | Facteur d'émission du train |
 |----------|:------------------------------:|:--------------------------------------------:|-----------------------------|
 | 1 - Base | 0,8 | 0,7 | 32g/km-pers (Allemagne)|
-| 2 - VLT (Vive Le Train) | 0,8 | 0,7 | 5g/km-pers (France) |
+| 2 - VLT (Vive Le Train) | 0,9 | 0,7 | 5g/km-pers (France) |
 | 3 - TNR (Train Non Rempli) | 0,5 | 0,7 | 32g/km-pers (Allemagne)|
 | 4 - SPV (Surtout Petites Villes) | 0,8 | 0,3 | 32g/km-pers (Allemagne)|
 | 5 - NAT (Non Au Train) | 0,5 | 0,3 | 32g/km-pers (Allemagne)|
