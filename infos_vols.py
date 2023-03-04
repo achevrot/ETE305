@@ -1,5 +1,6 @@
 import pandas as pd
 from geopy.distance import great_circle
+from tqdm import tqdm
 
 df_all_data = pd.read_csv('Flights_20190301_20190331.csv') # Fichier trop lourd pour être ajouté sur le repo Git
 
@@ -24,7 +25,7 @@ df_coeff_ac = pd.read_csv('data/ac_model_coefficients.csv')
 list_emissions = []
 list_avions_non_rep = []
 
-for i in range(len(df_all_data.ADEP)):
+for i in tqdm(range(len(df_all_data.ADEP))):
     ac = df_all_data['AC Type'][i]
 
     if ac in df_coeff_ac['ac_code_icao'].values:
