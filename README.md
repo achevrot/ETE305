@@ -125,7 +125,7 @@ Si vous voulez partir de zéro sur un nouveau fichier, il faut d'abord créer le
 Selon l'ADEME, la construction d'un avion a un coût carbone de 40 kgCO2/kg d'avion.
 https://bilans-ges.ademe.fr/documentation/UPLOAD_DOC_FR/index.htm?aerien.htm
 D'après le rapport du Shift Project et Aero decarbo, un avion a une durée de vie de 15 à 25 ans. Nous prendrons donc 20 ans.
-Donc, sur une année, le coût carbone de la construction d'un avion est de 0,17 kg de CO2 par kg d'avion.
+Donc, sur un mois, le coût carbone de la construction d'un avion est de 0,17 kg de CO2 par kg d'avion.
 
 
 Facteurs d'émission train SNCF : https://medias.sncf.com/sncfcom/rse/Methodologie-generale_guide-information-CO2.pdf
