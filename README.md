@@ -26,9 +26,9 @@ Nos principaux résultats sont les suivants :
 
 ## Modélisation
 
-Nous nous intéressons aux vols intérieurs en Allemagne. Nous travaillons sur chaque couple de ville, défini comme un trajet possible. Par exemple, tous les vols effectuant Berlin -> Munich seront traités ensemble. Les vols Munich -> Berlin seront traités séparément. Cette décision a été prise car elle facilite la prise en comtpe du report modal : la contrainte sur le nombre de places disponibles en train est en effet propre à chaque trajet : un passagers sur le vol Berlin -> munich occupera une place train disponible sur Berlin -> Munich, et pas sur Hambourg -> Cologne, chaque trajet est donc indépendant des autres (les correspondances ne sont pas prises en compte, car nous n'avons pas d'information à ce sujet).
+Nous nous intéressons aux vols intérieurs en Allemagne. Nous travaillons sur chaque couple de ville, défini comme un trajet possible. Par exemple, tous les vols effectuant Berlin -> Munich seront traités ensemble. Les vols Munich -> Berlin seront traités séparément. Cette décision a été prise car elle facilite la prise en comtpe du report modal : la contrainte sur le nombre de places disponibles en train est en effet propre à chaque trajet : un passagers sur le vol Berlin -> Munich occupera une place train disponible sur Berlin -> Munich, et pas sur Hambourg -> Cologne par exemple, chaque trajet est donc indépendant des autres (les correspondances ne sont pas prises en compte, car nous n'avons pas d'information à ce sujet).
 
-Nous avons ainsi dénombré 368 trajets. La modédlisation expliquée par la suite est faite indépendamment pour chaque trajet allant d'une ville `v1` à une ville `v2`.
+Nous avons ainsi dénombré 178 trajets. La modédlisation expliquée par la suite est faite indépendamment pour chaque trajet allant d'une ville `v1` à une ville `v2`.
 
 Nous utilisons la bibliothèque PuLP de python.
 
@@ -50,7 +50,7 @@ Nous avons défini 5 scénarios, et nous avons fait tourner notre optimisation p
 - $passagers^{init}$: nombre entier, nombre de passagers sur les vols initiaux de `v1` à `v2` pendant la période sélectionnée.
 - $place^{train}$ : nombre entier, nombre de places disponbibles dans les trains entre `v1` et `v2` pendant la période sélectionnée.
 - $n$ : nombre entier, nombre de vols entre `v1` et `v2` pendant la période sélectionnée.
-- $m = 52$ : nombre entier, nombre de type d'avions répertoriés dans notre analyse.
+- $m = 28$ : nombre entier, nombre de type d'avions répertoriés dans notre analyse.
 - $j$ : nombre entier, indice utilisé pour parler d'un type d'avions, $j$ va de $0$ à $m-1$.
 - $N_0$ : tableau d'entiers, de taille $m$, contenant le nombre de vols avec un avion de type $j$ faisant le trajet de `v1` à `v2` pendant la période sélectionnée.
 - $CO_2$ : tableau de taille $m$, contenant les émissions de $CO_2$ (en kg) d'un avion de type $j$ faisant le trajet de `v1` à `v2`.
@@ -64,7 +64,7 @@ Nous avons défini 5 scénarios, et nous avons fait tourner notre optimisation p
 - `nb_vols[j]`, $j\in [0,m-1]$ : nombre de vols d'un avion de type $j$ de `v1` à `v2` pendant la période sélectionnée. C'est bien le nombre de vols, et pas le nombre d'appareils : si un même appareil réalise 2 fois le trajet, il compte pour 2 et pas 1.
 - `nb_nouv_vols[j]`, $j\in [0,m-1]$ : quantité de nouveaux vols possibles avec un avion de type $j$ à construire, avec l'hypothèse qu'un avion peut faire au maximum 60 fois le même trajet dans le mois.
 
-Il y a donc 52x3 = 156 variables de décisions pour chaque trajet.
+Il y a donc 28x3 = 84 variables de décisions pour chaque trajet.
 
 ### Contraintes
 
