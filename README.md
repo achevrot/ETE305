@@ -41,7 +41,7 @@ Nous avons défini 5 scénarios, et nous avons fait tourner notre optimisation p
 | Scénario | Taux de remplissage des trains | Taux de places attribuées aux grands trajets | Facteur d'émission du train |
 |----------|:------------------------------:|:--------------------------------------------:|-----------------------------|
 | 1 - Base | 0,8 | 0,7 | 32g/km-pers (Allemagne)|
-| 2 - VLT (Vive Le Train) | 0,8 | 0,7 | 5g/km-pers (France) |
+| 2 - VLT (Vive Le Train) | 0,9 | 0,7 | 5g/km-pers (France) |
 | 3 - TNR (Train Non Rempli) | 0,5 | 0,7 | 32g/km-pers (Allemagne)|
 | 4 - SPV (Surtout Petites Villes) | 0,8 | 0,3 | 32g/km-pers (Allemagne)|
 | 5 - NAT (Non Au Train) | 0,5 | 0,3 | 32g/km-pers (Allemagne)|
@@ -89,7 +89,7 @@ Les valeurs sont divisées par 1000, pour passer en tonnes de $CO_2$ et éviter 
 
 ## À faire
 
-- [ ] Enlever les jets privés -> Constant, puis refaire tourner l'optim sur les différents scénarios -> Apolline
+- [x] Enlever les jets privés -> Constant, puis refaire tourner l'optim sur les différents scénarios -> Apolline
 - [x] Nettoyer le repo git -> Apolline
 - [x] Mise à jour du README -> Apolline
 - [ ] Analyse des résultats -> Constant
@@ -125,7 +125,7 @@ Si vous voulez partir de zéro sur un nouveau fichier, il faut d'abord créer le
 Selon l'ADEME, la construction d'un avion a un coût carbone de 40 kgCO2/kg d'avion.
 https://bilans-ges.ademe.fr/documentation/UPLOAD_DOC_FR/index.htm?aerien.htm
 D'après le rapport du Shift Project et Aero decarbo, un avion a une durée de vie de 15 à 25 ans. Nous prendrons donc 20 ans.
-Donc, sur une année, le coût carbone de la construction d'un avion est de 0,17 kg de CO2 par kg d'avion.
+Donc, sur un mois, le coût carbone de la construction d'un avion est de 0,17 kg de CO2 par kg d'avion.
 
 
 Facteurs d'émission train SNCF : https://medias.sncf.com/sncfcom/rse/Methodologie-generale_guide-information-CO2.pdf
