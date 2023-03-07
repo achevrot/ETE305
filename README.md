@@ -1,8 +1,5 @@
 # ETE305
 
-Slides : 
-https://docs.google.com/presentation/d/1PPGJkFX__X4g9yJG4p3WRMIzL1cTqfYSVBUSeDgx-1M/edit?usp=sharing
-
 ## Abstract : Impact de la gestion du trafic ferroviaire sur le bilan carbone du trafic aérien en Allemagne
 
 Notre étude s’intéresse à la minimisation du bilan carbone de la mobilité collective intérieure à l’Allemagne, et plus particulièrement aux trafics aériens et ferroviaires. Tout en conservant le même nombre de passagers entre la situation initiale et la situation finale (pas de sobriété), nous proposons d’activer 2 leviers :
@@ -18,11 +15,7 @@ Les décisions prises par notre algorithme dépendent de l’arbitrage fait sur 
 
 Nos principaux résultats sont les suivants :
 
-## Attendus
-
-- Faire un titre + abstract en 120 mots : qu'est-ce qu'on a fait, comment on s'y est pris et le résultat. Pour la veille. + lien git
-- Présentation de 15 minutes.
-- Mail : xavier.olive@onera.fr ; antoine.chevrot@onera.fr ; olivier.poitou@onera.fr
+[A COMPLÉTER]
 
 ## Modélisation
 
