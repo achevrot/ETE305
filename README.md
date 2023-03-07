@@ -92,7 +92,7 @@ Les valeurs sont divisées par 1000, pour passer en tonnes de $CO_2$ et éviter 
 - [x] Enlever les jets privés -> Constant, puis refaire tourner l'optim sur les différents scénarios -> Apolline
 - [x] Nettoyer le repo git -> Apolline
 - [x] Mise à jour du README -> Apolline
-- [ ] Analyse des résultats -> Constant
+- [x] Analyse des résultats -> Constant
 - [ ] Finition de l'asbtract -> Floriane
 - [ ] Diaporama -> Floriane
 
