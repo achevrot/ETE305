@@ -1,0 +1,44 @@
+Ville_1 : Frankfurt-am-Main
+Ville_2 : Nuremberg
+Nombre de passagers initiaux : 22566.0
+Nombre de places dans les trains : 8310.0
+Status: Optimal
+Valeurs finales des variables de décision: 
+j,AC Type,Capacity,passagers_init,nb_passagers,N_0,nb_vols,nb_nouv_avions
+0,A20N,194,1552.0,0,8.0,0,0
+1,A319,142,9088.0,0,64.0,0,0
+2,A320,180,3420.0,0,19.0,0,0
+3,A321,220,4180.0,0,19.0,0,0
+4,A332,293,0.0,0,0.0,0,0
+5,A343,335,0.0,0,0.0,0,0
+6,AT43,50,0.0,0,0.0,0,0
+7,AT72,72,0.0,14256,0.0,198,4
+8,B38M,178,0.0,0,0.0,0,0
+9,B734,168,0.0,0,0.0,0,0
+10,B736,132,0.0,0,0.0,0,0
+11,B737,149,0.0,0,0.0,0,0
+12,B738,167,0.0,0,0.0,0,0
+13,B752,228,0.0,0,0.0,0,0
+14,B753,280,0.0,0,0.0,0,0
+15,B763,351,0.0,0,0.0,0,0
+16,B788,250,0.0,0,0.0,0,0
+17,C310,5,0.0,0,0.0,0,0
+18,CRJ7,70,0.0,0,0.0,0,0
+19,CRJ9,90,2160.0,0,24.0,0,0
+20,CRJX,104,0.0,0,0.0,0,0
+21,D328,39,0.0,0,0.0,0,0
+22,DH8D,78,0.0,0,0.0,0,0
+23,E120,30,0.0,0,0.0,0,0
+24,E170,80,0.0,0,0.0,0,0
+25,E190,114,2166.0,0,19.0,0,0
+26,E195,124,0.0,0,0.0,0,0
+27,J328,32,0.0,0,0.0,0,0
+28,JS32,19,0.0,0,0.0,0,0
+Nombre de passagers finaux : 14256
+Emissions de CO2 totales, en tonnes : Début : 743.485
+Fin : 330.266321611841
+Résultat optim : 330.266321611841
+CO2 venant des avions : 267.0729882785077
+CO2 venant des trains : 49.86
+CO2 venant de la construction de nouveaux avions : 13.333333333333332
+Delta CO2 économisé : 413.218678388159

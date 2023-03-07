@@ -18,19 +18,33 @@ Les décisions prises par notre algorithme dépendent de l’arbitrage fait sur 
 
 Nos principaux résultats sont les suivants :
 
-## Notes
+## Attendus
 
 - Faire un titre + abstract en 120 mots : qu'est-ce qu'on a fait, comment on s'y est pris et le résultat. Pour la veille. + lien git
 - Présentation de 15 minutes.
 - Mail : xavier.olive@onera.fr ; antoine.chevrot@onera.fr ; olivier.poitou@onera.fr
 
-## Nouvelle modélisation
+## Modélisation
 
-On s'intéresse aux vols intérieurs en Allemagne. Nous travaillons sur chaque couple de ville, défini comme un trajet possible. Par exemple, tous les vols effectuant Berlin -> Munich seront traités ensemble. Les vols Munich -> Berlin seront traités séparément. Cette décision a été prise car elle facilite la prise en comtpe du report modal : la contrainte sur le nombre de places disponibles en train est en effet propre à chaque trajet : un passagers sur le vol Berlin -> munich occupera une place train disponible sur Berlin -> Munich, et pas sur Hambourg -> Cologne, chaque trajet est donc indépendant des autres (les correspondances ne sont pas prises en compte, car nous n'avons pas d'information à ce sujet).
+Nous nous intéressons aux vols intérieurs en Allemagne. Nous travaillons sur chaque couple de ville, défini comme un trajet possible. Par exemple, tous les vols effectuant Berlin -> Munich seront traités ensemble. Les vols Munich -> Berlin seront traités séparément. Cette décision a été prise car elle facilite la prise en comtpe du report modal : la contrainte sur le nombre de places disponibles en train est en effet propre à chaque trajet : un passagers sur le vol Berlin -> munich occupera une place train disponible sur Berlin -> Munich, et pas sur Hambourg -> Cologne, chaque trajet est donc indépendant des autres (les correspondances ne sont pas prises en compte, car nous n'avons pas d'information à ce sujet).
 
 Nous avons ainsi dénombré 368 trajets. La modédlisation expliquée par la suite est faite indépendamment pour chaque trajet allant d'une ville `v1` à une ville `v2`.
 
+Nous utilisons la bibliothèque PuLP de python.
+
 Période sélectionnée : mars 2019.
+
+### Scénarios
+
+Nous avons défini 5 scénarios, et nous avons fait tourner notre optimisation pour ces 5 scénarios, afin de comparer l'influence des différents paramètres.
+
+| Scénario | Taux de remplissage des trains | Taux de places attribuées aux grands trajets | Facteur d'émission du train |
+|----------|:------------------------------:|:--------------------------------------------:|-----------------------------|
+| 1 - Base | 0,8 | 0,7 | 32g/km-pers (Allemagne)|
+| 2 - VLT (Vive Le Train) | 0,9 | 0,7 | 5g/km-pers (France) |
+| 3 - TNR (Train Non Rempli) | 0,5 | 0,7 | 32g/km-pers (Allemagne)|
+| 4 - SPV (Surtout Petites Villes) | 0,8 | 0,3 | 32g/km-pers (Allemagne)|
+| 5 - NAT (Non Au Train) | 0,5 | 0,3 | 32g/km-pers (Allemagne)|
 
 ### Notations
 - $passagers^{init}$: nombre entier, nombre de passagers sur les vols initiaux de `v1` à `v2` pendant la période sélectionnée.
@@ -70,69 +84,18 @@ Les valeurs sont divisées par 1000, pour passer en tonnes de $CO_2$ et éviter 
 ### Remarques
 
 - Le report ne prend pas en compte les horaires précis des vols et des trains, mais seulement un décompte global sur le mois de mars 2019.
-- Ne prends pas en compte le fait que créer un nouvel avion permet de faire plusieurs vols avec. -> A priori OK
-- On pourrait essayer de faire les calculs avec les émissions CO$_2$ de train pour la France, pour voir l'impact du facteur d'émission du mix électrique. -> OK, à faire
-- On pourrait essayer de prendre en compte plusieurs mois (pour l'instant, seuls les vols de mars 2019 sont pris en compte).
+- On pourrait essayer de prendre en compte plusieurs mois (pour l'instant, seuls les vols de mars 2019 sont pris en compte), mais a priori cela ne changera pas les résultats.
 
-## Modélisation du problème
-
-- Notations : on travaille sur les vols $i$ et les avions $j$. 
-    - $s_{i,j}$ : On utilise l'avion $j$ pour effectuer le vol $i$, booléen
-    - $CO2_{i,j}$ : émissions $CO_2$ du vol $i$ effectué avec l'avion $j$
-    - ${p_0}_i$ : Nombre de passagers initiaux dans le vol $i$.
-    - place_train : nombre de places libres dans les trains.
-    - $N_j$ : Nombre d'avions de type $j$ disponibles.
-    - $N0_j$ : Nombre d'avions de type $j$ initialement disponibles.
-    - $C_j$ : Capacité en passagers de l'avion de type $j$.
-    - $B_j = N_j-N0_j$ : Nombre d'avions de type $j$ à construire.
-    - $ICO2_j$ : Impact carbone de la construction de l'avion de type $j$.
-    - $p_i$ : nombre de passagers dans le vol $i$
-
-
-- Variables de décision :
-    - Booléen $s_{i,j}$
-    - Variable entière : $p_i$, bornée entre $0$ et $p0_i$
-    - Variable entière : $N_j$
-
-- Contraintes :
-    - Limite sur le nombre d'avions d'un certain type :   $\forall j \quad \sum_i s_{i,j} \leq N_j$
-    - Limite sur la capacité en passagers de l'avion : $\forall i,j \quad p_i \cdot s_{i,j} \leq C_j$
-    - Limite en capacité en passagers de train : $\sum_i (p0_i - p_i) \leq$ place_train
-    - On ne peut pas détruire des avions : $\forall j \quad N_j \geq N0_j$
-    - Plusieurs avions n'effectuent pas le même trajet : $\forall i \quad \sum_j s_{i,j} \leq 1$
-   
-- Critères : min $\sum_{i,j} CO2_{i,j} \cdot s_{i,j}   + \sum_j B_j \cdot ICO2_j $
-    - Hypothèse : dans un premier temps, on néglige les émissions de CO2 des trains, mais il faudra en tenir compte.
 
 ## À faire
 
-- Dans `flights_and_emissions.csv` : rajouter une colonne capacité -> Constant
-- Créer un csv (ou autre) qui contient les émissions de fabrication pour chaque type d'avion -> Flo
-- Créer un csv avec les colonnes : ville1, ville2, nombre de places libres pour aller de ville1 à ville 2 par jour -> Flo
-    - Pour ça, besoin de beaucoup d'hypothèses !!! 
-    - ville1 et ville 2 à extraire du tableau `flights_and_emissions.csv`
-    - Les chiffres qu'on a :
-        - 82 000 000 de passagers longue distance par an
-        - 31,4% de taux d'occupation
-    - trouver une manière de pondérer les places disponibles selon le trajet (yolo)
+- [x] Enlever les jets privés -> Constant, puis refaire tourner l'optim sur les différents scénarios -> Apolline
+- [x] Nettoyer le repo git -> Apolline
+- [x] Mise à jour du README -> Apolline
+- [ ] Analyse des résultats -> Constant
+- [ ] Finition de l'asbtract -> Floriane
+- [ ] Diaporama -> Floriane
 
-Idée du tableau attendu :
-| Ville 1 | Ville 2 | Nombre de places libres par jour | CO2 émis / passager |
-|--------------|-----------|------------|------------|
-| | | | |
-| | | | |
-
-- Ajouter au tableau précédent les émissions de CO2 par passager sur chaque trajet ville1 - ville2 -> Constant
-
-Si possible, ce qui est au-dessus fait max le vendredi 10 février
-
-- Implémenter la nouvelle optimisation -> Apolline, le week-end du 11-12 février
-
-## Notes
-
-- Faire un titre + abstract en 120 mots : qu'est-ce qu'on a fait, comment on s'y est pris et le résultat. Pour la veille. + lien git
-- Présentation de 15 minutes.
-- Mail : xavier.olive@onera.fr ; antoine.chevrot@onera.fr ; olivier.poitou@onera.fr
 
 ## Tuto Github - en local
 
@@ -157,12 +120,12 @@ Si vous voulez partir de zéro sur un nouveau fichier, il faut d'abord créer le
 `git push` Permet d'envoyer ses modifications à tout le monde.
 
 
-### Sources :
+## Sources :
 
-Selon l'ADEME, la construction d'un avion à un coût carbone de 40 kgCO2/kg d'avion.
+Selon l'ADEME, la construction d'un avion a un coût carbone de 40 kgCO2/kg d'avion.
 https://bilans-ges.ademe.fr/documentation/UPLOAD_DOC_FR/index.htm?aerien.htm
 D'après le rapport du Shift Project et Aero decarbo, un avion a une durée de vie de 15 à 25 ans. Nous prendrons donc 20 ans.
-Donc, sur une année, le coût carbone de la construction d'un avion est de 2kg de CO2 par kg d'avion.
+Donc, sur une année, le coût carbone de la construction d'un avion est de 0,17 kg de CO2 par kg d'avion.
 
 
 Facteurs d'émission train SNCF : https://medias.sncf.com/sncfcom/rse/Methodologie-generale_guide-information-CO2.pdf

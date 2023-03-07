@@ -1,0 +1,44 @@
+Ville_1 : Dusseldorf
+Ville_2 : Cologne
+Nombre de passagers initiaux : 167.0
+Nombre de places dans les trains : 9300.0
+Status: Optimal
+Valeurs finales des variables de décision: 
+j,AC Type,Capacity,passagers_init,nb_passagers,N_0,nb_vols,nb_nouv_avions
+0,A20N,194,0.0,0,0.0,0,0
+1,A319,142,0.0,0,0.0,0,0
+2,A320,180,0.0,0,0.0,0,0
+3,A321,220,0.0,0,0.0,0,0
+4,A332,293,0.0,0,0.0,0,0
+5,A343,335,0.0,0,0.0,0,0
+6,AT43,50,0.0,0,0.0,0,0
+7,AT72,72,0.0,0,0.0,0,0
+8,B38M,178,0.0,0,0.0,0,0
+9,B734,168,0.0,0,0.0,0,0
+10,B736,132,0.0,0,0.0,0,0
+11,B737,149,0.0,0,0.0,0,0
+12,B738,167,167.0,0,1.0,0,0
+13,B752,228,0.0,0,0.0,0,0
+14,B753,280,0.0,0,0.0,0,0
+15,B763,351,0.0,0,0.0,0,0
+16,B788,250,0.0,0,0.0,0,0
+17,C310,5,0.0,0,0.0,0,0
+18,CRJ7,70,0.0,0,0.0,0,0
+19,CRJ9,90,0.0,0,0.0,0,0
+20,CRJX,104,0.0,0,0.0,0,0
+21,D328,39,0.0,0,0.0,0,0
+22,DH8D,78,0.0,0,0.0,0,0
+23,E120,30,0.0,0,0.0,0,0
+24,E170,80,0.0,0,0.0,0,0
+25,E190,114,0.0,0,0.0,0,0
+26,E195,124,0.0,0,0.0,0,0
+27,J328,32,0.0,0,0.0,0,0
+28,JS32,19,0.0,0,0.0,0,0
+Nombre de passagers finaux : 0
+Emissions de CO2 totales, en tonnes : Début : 4.345
+Fin : 0.334
+Résultat optim : 0.334
+CO2 venant des avions : 0.0
+CO2 venant des trains : 0.334
+CO2 venant de la construction de nouveaux avions : 0.0
+Delta CO2 économisé : 4.011
