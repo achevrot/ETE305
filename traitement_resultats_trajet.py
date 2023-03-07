@@ -14,7 +14,7 @@ columns = ['Initial','Scénario 1 (Base)','Scénario 2 (VLT)','Scénario 3 (TNR)
 index2 = ['Passagers avions (x 1000)','Passagers train (x 1000)','CO2 vols avions (kt)',
          'CO2 construction nouveaux avions (kt)','CO2 train (kt)','Delta CO2']
 
-with pd.ExcelWriter("/ETE_305/ETE305/resultats_par_trajet.xlsx") as writer:
+with pd.ExcelWriter("resultats/resultats_par_trajet.xlsx") as writer:
 
     for j in range(len(numero_trajet)):
 

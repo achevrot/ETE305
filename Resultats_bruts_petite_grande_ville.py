@@ -11,7 +11,7 @@ index1 = ['A20N', 'A319', 'A320', 'A321', 'A332', 'A343', 'AT43', 'AT72', 'B38M'
           'JS32']
 columns = ['Capacity','Nb initial passagers avion', 'Nb final passagers avion', 'Nb initial vols', 'Nb final vols', 'Nb nouveaux avions']
 
-with pd.ExcelWriter("C:/Users/const/PycharmProjects/pythonProject/ETE_305/ETE305/resultats_par_avion.xlsx") as writer:
+with pd.ExcelWriter("resultats/resultats_par_avion.xlsx") as writer:
     for i in range(len(scenarii)):
 
         df_all_data = pd.DataFrame(index=index1, columns=columns)

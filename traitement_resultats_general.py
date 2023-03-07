@@ -50,4 +50,4 @@ for i in range(len(scenarii)):
     df_recap_scenario[columns[i+1]] = [nb_passagers_avions_fin/1000, passagers_train/1000,
                                       CO2_avions/1000,CO2_nouv_avions/1000,CO2_trains/1000,delta_CO2/1000]
 
-df_recap_scenario.to_excel('resultats_generaux.xlsx')
+df_recap_scenario.to_excel('resultats/resultats_generaux.xlsx')
