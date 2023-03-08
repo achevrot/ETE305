@@ -50,4 +50,3 @@ with pd.ExcelWriter("resultats/resultats_par_avion.xlsx") as writer:
             df_all_data['Nb nouveaux avions'] = nb_avions_constr
 
             df_all_data.to_excel(writer, sheet_name=scenarii[i], startcol=12*j)
-

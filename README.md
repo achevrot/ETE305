@@ -66,12 +66,14 @@ Il y a donc 28x3 = 84 variables de décisions pour chaque trajet.
 ### Contraintes
 
 - Le nombre de passagers doit être positif ou nul : $\forall j\quad$ `nb_passagers[j]` $\geq 0$
-- On ne crée pas de nouveaux passagers : $\sum_j$ `nb_passagers[j]` $\leq passagers^{init}\quad\Rightarrow\quad 0\leq passagers^{init}-\sum_j$ `nb_passagers[j]`
+- On ne crée pas de nouveaux passagers : $\sum_j$ `nb_passagers[j]` $\leq passagers^{init}$
 - Le nombre de personnes prenant le train ne doit pas excéder le nombre de places libres en train : $passagers^{init}-\sum_j$ `nb_passagers[j]` $\leq place_{train}$
 - Le nombre de vols doit être positif ou nul : $\forall j\quad$ `nb_vols[j]` $\geq 0$
 - Le nombre de nouveaux avions doit être positif ou nul : $\forall j\quad$ `nb_nouv_vols[j]` $\geq 0$
-- Le nombre d'avions de type $j$ doit être égal au rapport entre le nombre de passagers empruntant un avion de type $j$ et la capacité de l'avion. Comme ce dernier n'est pas forcément un nombre entier, cette contrainte est définie comme étant élastique, afin d'avoir une tolérance sur l'égalité : $\forall j\quad$ `nb_passagers[j]` - `nb_vols[j]` $\times capacite_j = 0$
-- Le nombre de passagers ne peut pas excéder la capacité maximale de tous les vols disponibles : $\forall j \quad$ `nb_passagers[j]` $\leq capacite_j \times({N_0}_j+$ `nb_nouv_vols[j]`)
+- Le nombre de passagers en avion ne peut excéder la capacité des avions disponibles : $\forall j \quad$ `nb_passagers[j]` $\leq capacite_j \times({N_0}_j+60\times$ `nb_nouv_vols[j]`)
+- Le nombre de passagers en avion ne peut axcéder la capacité des vols : $\forall j \quad$ `nb_passagers[j]` $\leq capacite_j \times$ `nb_nouv_vols[j]`
+- Le nombre de vols ne peut dépasser la capacité en vol : $\forall j \quad$ `nb_vols[j]` $\leq {N_0}_j +60\times$ `nb_nouv_vols[j]`
+- La fonction objectif est positive
 
 ### Fonction objectif
 On veut minimiser : $(\sum_j {CO_2}_j\times$ `nb_vols[j]`$+\sum_j {CO_2}^{train} \times (passagers^{init}-\sum_j$ `nb_passagers[j]`$) + \sum_j \frac{{{CO_2}^{constr}}_j}{60} \times$ `nb_nouv_vols[j]` $)/1000$
