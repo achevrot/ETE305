@@ -87,7 +87,7 @@ Les valeurs sont divisées par 1000, pour passer en tonnes de $CO_2$ et éviter 
 - [x] Mise à jour du README -> Apolline
 - [x] Analyse des résultats -> Constant
 - [ ] Finition de l'asbtract -> Floriane
-- [ ] Diaporama -> Floriane
+- [x] Diaporama -> Floriane
 
 
 ## Tuto Github - en local
