@@ -34,7 +34,6 @@ def CO2_vol(lat_depart, lon_depart, lat_arrivee, lon_arrivee, ac):
     return CO2
 
 def optim(m, passagers_init, CO2_depart, place_train, avions, CO2_avions, CO2_train, logfile):
-    inv_capacity = np.divide(np.ones(m),avions['Capacity'])
     # Futures variables de décision
     nb_passagers   = np.empty(m, dtype=object)
     nb_vols = np.empty(m, dtype=object)
