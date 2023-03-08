@@ -55,7 +55,7 @@ Nous avons défini 5 scénarios, et nous avons fait tourner notre optimisation p
 
 - `nb_passagers[j]`, $j\in [0,m-1]$ : indique le nombre de passagers prenant un vol de `v1` à `v2` dans un type d'avion $j$ pendant la période sélectionnée. Cette variable compte donc seulement les personnes prenant l'avion, et pas le train (le nombre de personnes prenant le train est $passagers^{init} - \sum_j$ `nb_passagers[j]`).
 - `nb_vols[j]`, $j\in [0,m-1]$ : nombre de vols d'un avion de type $j$ de `v1` à `v2` pendant la période sélectionnée. C'est bien le nombre de vols, et pas le nombre d'appareils : si un même appareil réalise 2 fois le trajet, il compte pour 2 et pas 1.
-- `nb_nouv_vols[j]`, $j\in [0,m-1]$ : quantité de nouveaux vols possibles avec un avion de type $j$ à construire, avec l'hypothèse qu'un avion peut faire au maximum 60 fois le même trajet dans le mois.
+- `nb_nouv_avions[j]`, $j\in [0,m-1]$ : quantité de nouveaux avions de type $j$ à construire, avec l'hypothèse qu'un avion peut faire au maximum 60 fois le même trajet dans le mois.
 
 Il y a donc 28x3 = 84 variables de décisions pour chaque trajet.
 
@@ -65,14 +65,14 @@ Il y a donc 28x3 = 84 variables de décisions pour chaque trajet.
 - On ne crée pas de nouveaux passagers : $\sum_j$ `nb_passagers[j]` $\leq passagers^{init}$
 - Le nombre de personnes prenant le train ne doit pas excéder le nombre de places libres en train : $passagers^{init}-\sum_j$ `nb_passagers[j]` $\leq place_{train}$
 - Le nombre de vols doit être positif ou nul : $\forall j\quad$ `nb_vols[j]` $\geq 0$
-- Le nombre de nouveaux avions doit être positif ou nul : $\forall j\quad$ `nb_nouv_vols[j]` $\geq 0$
-- Le nombre de passagers en avion ne peut excéder la capacité des avions disponibles : $\forall j \quad$ `nb_passagers[j]` $\leq capacite_j \times({N_0}_j+60\times$ `nb_nouv_vols[j]`)
-- Le nombre de passagers en avion ne peut excéder la capacité des vols : $\forall j \quad$ `nb_passagers[j]` $\leq capacite_j \times$ `nb_nouv_vols[j]`
-- Le nombre de vols ne peut dépasser la capacité en vol : $\forall j \quad$ `nb_vols[j]` $\leq {N_0}_j +60\times$ `nb_nouv_vols[j]`
+- Le nombre de nouveaux avions doit être positif ou nul : $\forall j\quad$ `nb_nouv_avions[j]` $\geq 0$
+- Le nombre de passagers en avion ne peut excéder la capacité des avions disponibles : $\forall j \quad$ `nb_passagers[j]` $\leq capacite_j \times({N_0}_j+60\times$ `nb_nouv_avions[j]`)
+- Le nombre de passagers en avion ne peut excéder la capacité des vols : $\forall j \quad$ `nb_passagers[j]` $\leq capacite_j \times$ `nb_nouv_avions[j]`
+- Le nombre de vols ne peut dépasser la capacité en vol : $\forall j \quad$ `nb_vols[j]` $\leq {N_0}_j +60\times$ `nb_nouv_avions[j]`
 - La fonction objectif est positive.
 
 ### Fonction objectif
-On veut minimiser : $(\sum_j {CO_2}_j\times$ `nb_vols[j]`$+\sum_j {CO_2}^{train} \times (passagers^{init}-\sum_j$ `nb_passagers[j]`$) + \sum_j \frac{{{CO_2}^{constr}}_j}{60} \times$ `nb_nouv_vols[j]` $)/1000$
+On veut minimiser : $(\sum_j {CO_2}_j\times$ `nb_vols[j]`$+\sum_j {CO_2}^{train} \times (passagers^{init}-\sum_j$ `nb_passagers[j]`$) + \sum_j {{CO_2}^{constr}}_j \times$ `nb_nouv_avions[j]` $)/1000$
 
 Les valeurs sont divisées par 1000, pour passer en tonnes de $CO_2$ et éviter d'avoir des valeurs trop élevées, plus compliquées à traiter informatiquement.
 
