@@ -11,11 +11,15 @@ Et ce, sachant qu’il est possible de construire de nouveaux avions, mais au pr
 Les décisions prises par notre algorithme dépendent de l’arbitrage fait sur 2 paramètres :
 
 1)	Le taux de remplissage maximal des trains   
-2)	La répartition des places de train entre les axes reliant 2 villes de plus de 500 000 habitants, et ceux qui n’en relie pas.
+2)	La répartition des places de train entre les axes reliant 2 villes de plus de 500 000 habitants, et ceux qui n’en relie pas
+3) Le facteur d’émissions du train (en gCO2/km.passager)
 
-Nos principaux résultats sont les suivants :
+Nos résultats montrent que les 2 premiers paramètres permettent d’économiser ⅓ des émissions de CO2 du trafic. Cette baisse est due aux reports modaux sur les trajets entre petites villes, car les trajets entre grandes villes restent saturés.
+Les trajets en avion s’effectuent uniquement avec les appareils les plus efficaces dans leur gamme, comme l’A320 ou l’AT43, ce qui induit également une baisse des émissions.
+Enfin, le facteur d’émission des trains est un paramètre qu’il est essentiel de contrôler, pour diminuer de ⅔ les émissions globales du trafic.
 
-[A COMPLÉTER]
+En résumé, le report modal vers le train est nécessaire pour faire baisser les émissions de CO2, mais n’est pas suffisant : les facteurs d’émissions des appareils aériens et ferroviaires sont des leviers essentiels pour atteindre la neutralité carbone.
+
 
 ## Modélisation
 
