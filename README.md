@@ -62,10 +62,10 @@ Il y a donc 28x3 = 84 variables de décisions pour chaque trajet.
 ### Contraintes
 
 - Le nombre de passagers doit être positif ou nul : $\forall j\quad$ `nb_passagers[j]` $\geq 0$
-- On ne crée pas de nouveaux passagers : $\sum_j$ `nb_passagers[j]` $\leq passagers^{init}$
-- Le nombre de personnes prenant le train ne doit pas excéder le nombre de places libres en train : $passagers^{init}-\sum_j$ `nb_passagers[j]` $\leq place_{train}$
 - Le nombre de vols doit être positif ou nul : $\forall j\quad$ `nb_vols[j]` $\geq 0$
 - Le nombre de nouveaux avions doit être positif ou nul : $\forall j\quad$ `nb_nouv_avions[j]` $\geq 0$
+- On ne crée pas de nouveaux passagers : $\sum_j$ `nb_passagers[j]` $\leq passagers^{init}$
+- Le nombre de personnes prenant le train ne doit pas excéder le nombre de places libres en train : $passagers^{init}-\sum_j$ `nb_passagers[j]` $\leq place_{train}$
 - Le nombre de passagers en avion ne peut excéder la capacité des avions disponibles : $\forall j \quad$ `nb_passagers[j]` $\leq capacite_j \times({N_0}_j+60\times$ `nb_nouv_avions[j]`)
 - Le nombre de passagers en avion ne peut excéder la capacité des vols : $\forall j \quad$ `nb_passagers[j]` $\leq capacite_j \times$ `nb_nouv_avions[j]`
 - Le nombre de vols ne peut dépasser la capacité en vol : $\forall j \quad$ `nb_vols[j]` $\leq {N_0}_j +60\times$ `nb_nouv_avions[j]`
