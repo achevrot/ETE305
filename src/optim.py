@@ -40,29 +40,47 @@ def CO2_vol(lat_depart, lon_depart, lat_arr, lon_arr, ac_type):
     return co2
 
 
-def optim(m, passagers_init, CO2_depart, place_train, avions, CO2_avions, CO2_train, logfile):
+def optim(nbAircrafts, passagers_init, CO2_depart, place_train, avions, CO2_avions, CO2_train, logfile):
     # Futures variables de décision
-    nb_passagers = np.empty(m, dtype=object)
-    nb_vols = np.empty(m, dtype=object)
-    nb_nouv_avions = np.empty(m, dtype=object)
+    # nb passenger still traveling by plane
+    nb_passagers = np.empty(nbAircrafts, dtype=object)
+    # nb_flights with a given aircraft type
+    nb_vols = np.empty(nbAircrafts, dtype=object)
+    # nb of new planes of a given type
+    nb_nouv_avions = np.empty(nbAircrafts, dtype=object)
 
     # Déclaration problème
     prob = pulp.LpProblem("Optim", pulp.LpMinimize)
 
     # Variables de décision
-    for j in range(m):
+    for j in range(nbAircrafts):
         nb_passagers[j] = pulp.LpVariable("nb_passagers_{}".format(j), 0, None, cat=pulp.LpInteger)
         nb_vols[j] = pulp.LpVariable("nb_vols_{}".format(j), 0, None, cat=pulp.LpInteger)
         nb_nouv_avions[j] = pulp.LpVariable("nb_nouv_avions_{}".format(j), 0, None, cat=pulp.LpInteger)
 
     # Contraintes
+    # passengers still traveling by plane is at most all passengers traveling
     prob += np.sum(nb_passagers) <= passagers_init.sum()
+
+    # passengers by train are at most the number of empty seats
     prob += passagers_init.sum() - np.sum(nb_passagers) <= place_train
-    for j in range(m):
+
+
+    for j in range(nbAircrafts):
         # prob.extend(pulp.LpConstraint(nb_passagers[j]-nb_vols[j]*avions['Capacity'][j],sense=0,name="Contrainte_{}".format(j),rhs=0).makeElasticSubProblem())
+        # nb passengers using a type j plane is at most the capacity of a type j plane * number of type j planes (existing + new) * 60 rotations
         prob += nb_passagers[j] <= avions["Capacity"][j] * (avions["N_0"][j] + 60 * nb_nouv_avions[j])
+        # J'ai l'impression que cette contrainte ne traduit pas ce qu'il faudrait, limite-t-elle l'utilisation des avions existants aux nombres de vols qu'ils effectuent déjà ?
+        # L'hypoyhèse est-elle faire que les avions ne sont utilisés que sur une ligne ?
+
+        # le nombre de passagers est cohérent avec le nombre de vols
         prob += nb_passagers[j] <= avions["Capacity"][j] * nb_vols[j]
+        # c'est déja garanti par la minimisation mais on aurait pu aussi indiquer la contrainte que le nombre de passager est au moins égal au nombre de vols (i.e pas de vol à vide)
+
+        # A nouveau, pourquoi contraindre le nombre de rotation des avions existants à leur rotations actuelles ?
         prob += nb_vols[j] <= avions["N_0"][j] + 60 * nb_nouv_avions[j]
+
+        # A quoi sert cette contrainte : (optim du solveur ?)
         prob += (
             0
             <= (
@@ -89,10 +107,10 @@ def optim(m, passagers_init, CO2_depart, place_train, avions, CO2_avions, CO2_tr
     fichier_log.write("Valeurs finales des variables de décision: \n")
     fichier_log.write("j,AC Type,Capacity,passagers_init,nb_passagers,N_0,nb_vols,nb_nouv_avions\n")
     nb_passagers_finaux = 0
-    passagers_finaux = np.empty(m)
-    nb_vols_final = np.empty(m)
-    nb_nouv_avions_final = np.empty(m)
-    for j in range(m):
+    passagers_finaux = np.empty(nbAircrafts)
+    nb_vols_final = np.empty(nbAircrafts)
+    nb_nouv_avions_final = np.empty(nbAircrafts)
+    for j in range(nbAircrafts):
         passagers_courant = pulp.value(nb_passagers[j])
         passagers_finaux[j] = passagers_courant
         nb_vols_final[j] = pulp.value(nb_vols[j])
@@ -137,32 +155,35 @@ def optim(m, passagers_init, CO2_depart, place_train, avions, CO2_avions, CO2_tr
 
 print("----- Création des données -----")
 
-# Vols notés i, de 1 à n
+# Vols notés i, de 1 à nbFlights
 flights = pd.read_csv("../data/flights_and_emissions.csv")
-n = len(flights)
+nbFlights = len(flights)
 CO2_flights = round(flights["Emissions_kgCO2eq"])
 
-# Types d'avions notés j, de 1 à m
+# Types d'avions notés j, de 1 à nbAircrafts
 avions = pd.read_csv("../data/Tableau_recap_avions.csv")
-m = len(avions)
+nbAircrafts = len(avions)
 """
-for j in range(m):
+for j in range(nbAircrafts):
     avions['CO2_construction (kg)'] = 0
 """
 # Trains
 trains = pd.read_csv("../data/Tableau_recap_train" + str(SCENARIO) + ".csv")
+
+# A quoi correpond le 10 de la ligne suivante ?
 PLACE_TRAINS = trains["Places dispo par jour"] * 10  # Pour un mois
+
 CO2_trains = round(trains["Emissions_CO2 (kg/passager)"])
-t = len(trains)
+nbTrains = len(trains)
 
 # Collecte des données par couple de villes
 """
 df_aeroport_ville = pd.read_csv('data/airports_ICAO.csv',usecols=["icao","city"])
-CO2_debut = np.zeros(t)
-passagers_init = np.zeros((t,m))
-N_0 = np.zeros((t,m))
-CO2_avions = np.zeros((t,m))
-for i in tqdm(range(n)): # itération sur tous les vols
+CO2_debut = np.zeros(nbTrains)
+passagers_init = np.zeros((nbTrains,nbAircrafts))
+N_0 = np.zeros((nbTrains,nbAircrafts))
+CO2_avions = np.zeros((nbTrains,nbAircrafts))
+for i in tqdm(range(nbFlights)): # itération sur tous les vols
     # Trouver l'indice correspondant au couple (ville1,ville2) :
     ap1 = flights['ADEP'].iloc[i]
     ap2 = flights['ADES'].iloc[i]
@@ -181,7 +202,7 @@ for i in tqdm(range(n)): # itération sur tous les vols
         lon_depart = flights['ADEP Longitude'].iloc[i]
         lat_arrivee = flights['ADES Latitude'].iloc[i]
         lon_arrivee = flights['ADES Longitude'].iloc[i]
-        for j_avions in range(m):
+        for j_avions in range(nbAircrafts):
             CO2_avions[indice_trajet,j_avions] = CO2_vol(lat_depart, lon_depart, lat_arrivee, lon_arrivee, avions['AC Type'].iloc[j_avions])
 np.save("data/CO2_debut",CO2_debut)
 np.save("data/passagers_init",passagers_init)
@@ -197,7 +218,7 @@ CO2_avions = np.load("../data/CO2_avions.npy")
 
 print("-----  Optimisation        -----")
 
-for indice_trajet in tqdm(range(t)):
+for indice_trajet in tqdm(range(nbTrains)):
     avions["N_0"] = N_0[indice_trajet]
     logfile = "../log/log-scenario5-05-03-32/log_trajet" + str(indice_trajet) + ".txt"
     f = open(logfile, "a")
@@ -207,7 +228,7 @@ for indice_trajet in tqdm(range(t)):
     f.write("Nombre de places dans les trains : " + str(PLACE_TRAINS[indice_trajet]) + "\n")
     f.close()
     optim(
-        m,
+        nbAircrafts,
         passagers_init[indice_trajet],
         CO2_debut[indice_trajet],
         PLACE_TRAINS[indice_trajet],
